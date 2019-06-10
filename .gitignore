@@ -74,3 +74,6 @@ typings/
 
 # FuseBox cache
 .fusebox/
+
+# exclude cert and key for backend https
+backend/app/security
