@@ -11,6 +11,7 @@ const helmet = require('helmet');
 
 dotenv.config();
 
+app.use('/uploads', express.static('uploads'));
 app.use(helmet());
 app.use(cors());
 app.use(bodyParser.json());
@@ -43,8 +44,8 @@ if (process.env.NODE_ENV === 'production') {
 } else {
     https
     .createServer({
-        key: fs.readFileSync('app/security/key.pem'), 
-        cert: fs.readFileSync('app/security/cert.pem'),
+        key: fs.readFileSync('app/security/server.key'), 
+        cert: fs.readFileSync('app/security/server.crt'),
     }, app)
     .listen(process.env.PORT, () => {
         console.log('Server running at https://localhost:3000');
