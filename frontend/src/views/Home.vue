@@ -12,7 +12,7 @@
       <img
         v-for="file in files"
         :key="file.originalname"
-        :src="`https://localhost:3000/${file.path}`" 
+        :src="`${domain}/${file.path}`" 
         :alt="file.originalname"
         width="400"
       />
@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import { DOMAIN } from '@/constants';
 export default {
   name: 'home',
   data() {
@@ -29,12 +30,17 @@ export default {
       files: [],
     };
   },
+  computed: {
+    domain() {
+      return DOMAIN;
+    },
+  },
   created() {
     this.checkHealth();
   },
   methods: {
     checkHealth() {
-      return fetch('https://localhost:3000/api/v1/health/')
+      return this.$fetch('/health/')
         .then(response => response.json())
         .then(({ status }) => {
           this.status = status;
@@ -47,7 +53,7 @@ export default {
 
       files.forEach(file => data.append('files', file));
 
-      return fetch('https://localhost:3000/api/v1/upload', {
+      return this.$fetch('/upload', {
         method: 'POST',
         body: data,
       })
