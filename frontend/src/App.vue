@@ -5,23 +5,15 @@
 </template>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.is-active {
-  color: #42b983;
+  background-color: hsl(60, 2%, 8%);
+  color: white;
 }
 </style>
