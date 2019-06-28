@@ -22,9 +22,18 @@ module.exports = async (req, res) => {
             );
         });
 
-        await Promise.all(queries);
+        let response = await Promise.all(queries);
 
-        res.status(200).json({ files });
+        response = response.map(res => ({ ...res[0]}));
+
+        const requested = response.map(res => (`${res.insertId}`));
+
+        const images = await connection.query(
+            'SELECT * FROM images WHERE id IN (?)',
+            [requested],
+        );
+        
+        res.status(200).json({ images: images[0] });
     } catch(error) {
         console.log(error);
         return res.status(500).json({ message: 'Internal server error' });
