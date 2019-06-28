@@ -1,9 +1,7 @@
-const profile = (req, res) => {
-    res.status(200).json({
-      user: { name: 'name' },
-    });
-  };
-  
-  module.exports = {
-    profile,
-  };
+module.exports = (req, res) => {
+  const { user } = req;
+
+  delete user.password;
+
+  res.status(200).json({ user: req.user });
+};
