@@ -25,8 +25,8 @@ export default {
   },
   methods: {
       createBoard() {
-        return this.$store.dispatch('boards/add', this.form)
-          .then(() => this.$router.push({ name: 'Board', params: { id: board.id } }))
+        return this.$store.dispatch('boards/create', this.form)
+          .then((board) => this.$router.push({ name: 'Board', params: { id: board.id } }))
       },
   },
   components: { BoardsList }

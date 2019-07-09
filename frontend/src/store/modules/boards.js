@@ -38,10 +38,13 @@ export default {
         clear({ commit }) {
             commit('clear')
         },
-        add({ commit }, form) {
+        create({ commit }, form) {
             return fetch(`/boards/`, { method: 'POST', body: JSON.stringify(form) })
                 .then(response => response.json())
-                .then(({ board }) => commit('add', board))
+                .then(({ board }) => {
+                    commit('create', board);
+                    return board;
+                })
                 .catch((error) => {
                     throw error;
                 });
