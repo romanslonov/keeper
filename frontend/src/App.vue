@@ -5,6 +5,13 @@
 </template>
 
 <style>
+:root {
+  --primary: #3DA0FF;
+  --secondary: #9DB1D8;
+
+  --sidebar-width: 250px;
+}
+
 * { box-sizing: border-box; }
 
 body {
@@ -13,7 +20,11 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  background-color: hsl(60, 2%, 8%);
+  background-color: #151618;
   color: white;
+}
+
+.text-secondary {
+  color: var(--secondary);
 }
 </style>
