@@ -18,30 +18,15 @@ export default {
   name: 'Sidebar',
   data() {
       return {
-          boards: [],
           form: {
               name: '',
           },
       };
   },
-  computed: {
-    user() {
-      return this.$store.getters.user;
-    }
-  },
   methods: {
       createBoard() {
-          return this.$fetch('/boards/', { 
-              method: 'POST', 
-              body: JSON.stringify(this.form),
-            })
-            .then(response => response.json())
-            .then(({ board }) => {
-                this.boards.push(board);
-
-                this.$router.push({ name: 'Board', params: { id: board.id } });
-            })
-            .catch(err => console.error(err));
+        return this.$store.dispatch('boards/add', this.form)
+          .then(() => this.$router.push({ name: 'Board', params: { id: board.id } }))
       },
   },
   components: { BoardsList }

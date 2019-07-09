@@ -19,6 +19,9 @@ export default {
             state.boards = [];
             state.fetched = false;
         },
+        create(state, board) {
+            state.boards.push(board);
+        },
         remove(state, id) {
             state.boards = state.boards.filter(board => board.id !== id);
         },
@@ -35,12 +38,20 @@ export default {
         clear({ commit }) {
             commit('clear')
         },
+        add({ commit }, form) {
+            return fetch(`/boards/`, { method: 'POST', body: JSON.stringify(form) })
+                .then(response => response.json())
+                .then(({ board }) => commit('add', board))
+                .catch((error) => {
+                    throw error;
+                });
+        },
         remove({ commit }, id) {
-            return this.$fetch(`/boards/${id}/`, { method: 'DELETE' })
+            return fetch(`/boards/${id}/`, { method: 'DELETE' })
                 .then(() => commit('remove', id))
                 .catch((error) => {
                     throw error;
                 });
-        }
+        },
     },
 }
