@@ -5,9 +5,9 @@ const getAll = async (req, res) => {
     try {
         connection = await pool.getConnection();
 
-        const images = await connection.query('SELECT * FROM images WHERE deletedAt IS NULL');
+        const files = await connection.query('SELECT * FROM files WHERE deletedAt IS NULL');
 
-        res.status(200).json({ images: images[0] });
+        res.status(200).json({ files: files[0] });
     } catch(error) {
         console.log(error);
         return res.status(500).json({ message: 'Internal server error' });
@@ -24,7 +24,7 @@ const remove = async (req, res) => {
         connection = await pool.getConnection();
         const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
         await connection.query(
-            'UPDATE images SET deletedAt = (?) WHERE id IN (?)', 
+            'UPDATE files SET deletedAt = (?) WHERE id IN (?)', 
             [now, [ids]]
         );
 
