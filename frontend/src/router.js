@@ -19,8 +19,18 @@ const router = new Router({
       children: [
         {
           path: '',
-          name: 'home',
+          name: 'Home',
           component: () => import(/* webpackChunkName: "home" */ './views/Home.vue'),
+        },
+        {
+          path: 'boards',
+          name: 'Boards',
+          component: () => import(/* webpackChunkName: "boards" */ './views/Boards.vue'),
+        },
+        {
+          path: 'boards/:id',
+          name: 'Board',
+          component: () => import(/* webpackChunkName: "boards" */ './views/Board.vue'),
         },
       ]
     },
