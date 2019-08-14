@@ -1,16 +1,15 @@
 <template>
   <div class="boards-list">
     <ul class="boards-list__list">
-      <li 
-        tabindex="0"
-        role="banner"
-        class="boards-list__item" 
+      <li
+        class="boards-list__item"
         v-for="board in boards" 
-        :key="board.id" 
-        @click="$router.push({ name: 'Board', params: { id: board.id } })"
+        :key="board.id"
       >
-        {{ board.name }}
-        <button @click="removeBoard(board.id)">Remove</button>
+        <router-link class="boards-list__link" :to="{ name: 'Board', params: { id: board.id } }">
+          {{ board.name }}
+          <button @click.stop.prevent="removeBoard(board.id)" :disabled="boards.length === 1">Remove</button>
+        </router-link>
       </li>
     </ul>
   </div>
@@ -38,7 +37,8 @@ export default {
       return this.$store.dispatch('boards/clear');
     },
     removeBoard(id) {
-      return this.$store.dispatch('boards/remove', id);
+      this.$store.dispatch('boards/remove', id)
+        .then(() => this.$router.push({ name: 'Home' }));
     },
   },
   beforeDestroy() {
@@ -54,12 +54,18 @@ export default {
   list-style: none;
 }
 .boards-list__item {
+  margin-bottom: 8px;
+}
+.boards-list__link {
+  color: var(--body-color);
+  text-decoration: none;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   padding: 4px;
   border-radius: 3px;
-  margin-bottom: 8px;
-  background-color: hsla(0, 0%, 100%, 0.1);
+}
+.boards-list__link.is-active {
+  background-color: hsla(0, 0%, 0%, 0.3);
 }
 </style>

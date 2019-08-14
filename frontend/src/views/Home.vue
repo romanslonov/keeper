@@ -1,7 +1,7 @@
 <template>
   <div class="about">
     <div style="display:flex;justify-content:space-between;">
-      <h1>Files</h1>
+      <h1>Recent files</h1>
 
       <!-- <v-upload @uploaded="onUpload" /> -->
     </div>
@@ -18,7 +18,8 @@ import VUpload from "@/components/Upload";
 export default {
   data() {
     return {
-      status: null
+      status: null,
+      files: [],
     };
   },
   computed: {},

@@ -1,4 +1,12 @@
 const pool = require('../db');
+const AWS = require('aws-sdk');
+
+const s3 = new AWS.S3({
+    accessKeyId: process.env.BUCKET_ACCESS_KEY,
+    secretAccessKey: process.env.BUCKET_SECRET_KEY,
+    Bucket: process.env.BUCKET_NAME,
+    endpoint: process.env.BUCKET_ENDPOINT,
+});
 
 const getAll = async (req, res) => {
     let connection;
@@ -23,9 +31,15 @@ const getOne = async (req, res) => {
 
         const { id } = req.params;
 
-        const board = await connection.query('SELECT id, name, createdAt FROM boards WHERE id = (?)', [id]);
+        const response = await connection.query('SELECT id, name, createdAt FROM boards WHERE `id` = ? AND `deletedAt` IS NULL', [id]);
+        
+        const board = response[0][0];
 
-        res.status(200).json({ board: board[0][0] });
+        if (board) {
+            return res.status(200).json({ board });
+        }
+
+        return res.status(404).json({ message: 'Board is not found' });
     } catch(error) {
         console.log(error);
         return res.status(500).json({ message: 'Internal server error' });
@@ -61,11 +75,28 @@ const remove = async (req, res) => {
     try {
         connection = await pool.getConnection();
         const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
-        await connection.query(
-            'UPDATE boards SET deletedAt = (?) WHERE id IN (?)', 
-            [now, id]
-        );
 
+        await connection.query('UPDATE `boards` SET `deletedAt` = (?) WHERE `id` IN (?)', [now, id]);
+
+        const [filesKeys] = await connection.query('SELECT `key` FROM `files` WHERE `boardId` = (?) AND `deletedAt` IS NULL', [id]);
+
+        const params = {
+            Bucket: process.env.BUCKET_NAME,
+            Delete: {
+                Objects: filesKeys.map(file => ({ Key: file.key })),
+            },
+        };
+
+        if (filesKeys.length > 0) {
+            s3.deleteObjects(params, async (err, data) => {
+                if (err) {
+                    return res.status(500).json({ message: 'Internal server error' });
+                } else {
+                    await connection.query('UPDATE `files` SET `deletedAt` = ? WHERE `key` IN ?', [now, [filesKeys.map(file => file.key)]]);
+                }
+            });
+        }
+        
         res.status(200).json({});
     } catch(error) {
         console.log(error);
@@ -88,7 +119,7 @@ const uploadFiles = async (req, res) => {
                 'INSERT INTO files SET ?',
                 {
                     userId: user.id,
-                    boardId: id,
+                    boardId: id || 1,
                     name: file.originalname,
                     bucket: file.bucket,
                     etag: file.etag,
@@ -141,18 +172,30 @@ const getFiles = async (req, res) => {
 };
 
 const removeFiles = async (req, res) => {
-    const ids = req.body;
+    const { keys } = req.body;
 
     let connection;
     try {
         connection = await pool.getConnection();
-        const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
-        await connection.query(
-            'UPDATE files SET deletedAt = (?) WHERE id IN (?)', 
-            [now, [ids]]
-        );
 
-        res.status(201).json({});
+        const params = {
+            Bucket: process.env.BUCKET_NAME,
+            Delete: {
+                Objects: keys.map(key => ({ Key: key })),
+            },
+        };
+
+        s3.deleteObjects(params, async (err, data) => {
+            if (err) {
+                return res.status(500).json({ message: 'Internal server error' });
+            } else {
+                const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+                await connection.query('UPDATE `files` SET `deletedAt` = ? WHERE `key` IN ?', [now, [keys]]);
+        
+                res.status(201).json({});
+            }
+        });
     } catch(error) {
         console.log(error);
         return res.status(500).json({ message: 'Internal server error' });
@@ -161,6 +204,27 @@ const removeFiles = async (req, res) => {
     }
 };
 
+const moveFiles = async (req, res) => {
+    const { keys } = req.body;
+    const boardId = req.params.id;
+
+    let connection;
+    try {
+        connection = await pool.getConnection();
+
+        await connection.query(
+            'UPDATE files SET boardId = ? WHERE `key` IN ?', 
+            [boardId, [keys]]
+        );
+
+        res.status(204).json({});
+    } catch(error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Internal server error' });
+    } finally {
+        if (connection) return connection.release();
+    }
+};
 
 module.exports = {
     getAll,
@@ -170,4 +234,5 @@ module.exports = {
     uploadFiles,
     getFiles,
     removeFiles,
+    moveFiles,
 };

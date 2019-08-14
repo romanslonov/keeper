@@ -1,7 +1,9 @@
 <template>
   <div class="files-grid">
-    <div class="files-grid-item" v-for="file in files" :key="file.id" tabindex="0">
-      <img class="files-grid-item__img" :src="`${file.url}`" :alt="file.name">
+    <div class="files-grid-item" v-for="file in files" :class="{ 'files-grid-item--active': isActive(file) }" :key="file.id" @click="select(file)">
+      <div class="files-grid-item__container">
+        <img class="files-grid-item__img" :src="`${file.url}`" :alt="file.name">
+      </div>
       <div class="files-grid-item__name">{{ file.name }}</div>
     </div>
   </div>
@@ -10,41 +12,64 @@
 <script>
 export default {
   name: 'FilesGrid',
+  data() {
+    return {
+      selected: [],
+    };
+  },
   props: {
     files: {
       type: Array,
       default: () => []
-    }
+    },
+  },
+  methods: {
+    select(file) {
+      if (this.selected.includes(file)) {
+        this.selected = this.selected.filter(s => s.id !== file.id);
+      } else {
+        this.selected.push(file);
+      }
+
+      this.$emit('select', this.selected);
+    },
+    isActive(file) {
+      return this.selected.includes(file);
+    },
   },
 };
 </script>
 
 <style>
 .files-grid {
-  display: flex;
-  flex-wrap: wrap;
+  --grid-item-size: 160px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--grid-item-size), 1fr));
+  grid-gap: 32px;
 }
 
 .files-grid-item {
   display: flex;
-  align-items: center;
-  justify-content: flex-end;
   flex-direction: column;
-  width: 90px;
-  margin-right: 64px;
-  margin-bottom: 64px;
+}
+
+.files-grid-item__container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
 }
 
 .files-grid-item:focus {
   outline: none;
 }
 
-.files-grid-item:focus .files-grid-item__img {
+.files-grid-item--active .files-grid-item__img  {
   border-color: var(--primary);
 }
 
 .files-grid-item__name {
-  color: var(--secondary);
+  /* color: var(--secondary); */
   display: block;
   overflow: hidden;
   white-space: nowrap;
@@ -57,10 +82,8 @@ export default {
 .files-grid-item__img {
   border-radius: 4px;
   max-width: 100%;
-  object-fit: contain;
-  width: 90px;
   height: auto;
-  max-height: 90px;
+  max-height: var(--grid-item-size);
   background-color: #fff;
   border: 3px white solid;
 }

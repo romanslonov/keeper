@@ -24,7 +24,7 @@ module.exports = async (req, res, next) => {
     if (rows.length === 0) {
       res.status(401).json({ message: 'Unauthorized' });
     }
-    
+
     req.user = user;
     req.token = decoded;
   } catch (error) {
