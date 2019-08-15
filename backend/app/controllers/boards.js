@@ -88,13 +88,13 @@ const remove = async (req, res) => {
         };
 
         if (filesKeys.length > 0) {
-            s3.deleteObjects(params, async (err, data) => {
-                if (err) {
-                    return res.status(500).json({ message: 'Internal server error' });
-                } else {
-                    await connection.query('UPDATE `files` SET `deletedAt` = ? WHERE `key` IN ?', [now, [filesKeys.map(file => file.key)]]);
-                }
-            });
+            try {
+                await s3.deleteObjects(params).promise();
+                await connection.query('UPDATE `files` SET `deletedAt` = ? WHERE `key` IN ?', [now, [filesKeys.map(file => file.key)]]);
+            } catch {
+                return res.status(500).json({ message: 'Internal server error' });
+            }
+            return res.status(200).json({});
         }
         
         res.status(200).json({});
