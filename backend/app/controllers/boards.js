@@ -185,17 +185,13 @@ const removeFiles = async (req, res) => {
             },
         };
 
-        s3.deleteObjects(params, async (err, data) => {
-            if (err) {
-                return res.status(500).json({ message: 'Internal server error' });
-            } else {
-                const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
+        await s3.deleteObjects(params).promise();
 
-                await connection.query('UPDATE `files` SET `deletedAt` = ? WHERE `key` IN ?', [now, [keys]]);
-        
-                res.status(201).json({});
-            }
-        });
+        const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+        await connection.query('UPDATE `files` SET `deletedAt` = ? WHERE `key` IN ?', [now, [keys]]);
+
+        res.status(201).json({});
     } catch(error) {
         console.log(error);
         return res.status(500).json({ message: 'Internal server error' });
