@@ -137,12 +137,12 @@ const uploadFiles = async (req, res) => {
 
         const requested = response.map(res => (`${res.insertId}`));
 
-        const filesBD = await connection.query(
+        const [filesBD] = await connection.query(
             'SELECT * FROM files WHERE id IN (?)',
             [requested],
         );
 
-        res.status(200).json({ files: filesBD[0] });
+        res.status(200).json({ files: filesBD });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: 'Internal server error' });
@@ -158,7 +158,7 @@ const getFiles = async (req, res) => {
         connection = await pool.getConnection();
 
         const files = await connection.query(
-            'SELECT * FROM files WHERE deletedAt IS NULL AND boardId = (?)', 
+            'SELECT * FROM `files` WHERE `deletedAt` IS NULL AND `boardId` = (?) ORDER BY `uploadedAt` DESC',
             [id]
         );
 
