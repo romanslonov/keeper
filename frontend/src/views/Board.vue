@@ -22,7 +22,7 @@
 
         <drag @uploaded="onUpload" />
 
-        <files-grid :files="files" @select="onSelected" />
+        <files-grid :files="files" @select="onSelect" @deselect="onDeselect" />
     </div>
 </template>
 
@@ -96,13 +96,17 @@ export default {
         onUpload(files) {
             this.files = [...this.files, ...files];
         },
-        onSelected(files) {
-            this.selected = files;
+        onSelect(file) {
+            this.selected.push(file);
+        },
+        onDeselect(file) {
+            this.selected = this.selected.filter(s => s.id !== file.id);
         },
     },
     watch: {
         '$route.params.id': function(id) {
             this.fetchBoard(id);
+            this.selected = [];
         },
     },
     components: { S3, FilesGrid, Drag },
