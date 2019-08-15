@@ -8,13 +8,7 @@
     </ul>
 
     <boards-list />
-
-    <div style="margin-top: 32px;">
-      <form @submit.prevent="createBoard">
-        <input type="text" placeholder="Name" v-model="form.name" />
-        <button type="submit">Create board</button>
-      </form>
-    </div>
+    
   </div>
 </template>
 
@@ -22,22 +16,6 @@
 import BoardsList from '@/components/BoardsList';
 export default {
   name: 'Sidebar',
-  data() {
-    return {
-      form: {
-        name: '',
-      },
-    };
-  },
-  methods: {
-    createBoard() {
-      return this.$store.dispatch('boards/create', this.form)
-        .then((board) => {
-          this.form.name = '';
-          this.$router.push({ name: 'Board', params: { id: board.id } });
-        });
-    }
-  },
   components: { BoardsList }
 };
 </script>

@@ -1,5 +1,9 @@
 <template>
   <div class="boards-list">
+    <div class="boards-header">
+      <div class="boards-header__title">Boards</div>
+      <button @click="modals.create = true">+</button>
+    </div>
     <ul class="boards-list__list">
       <li
         class="boards-list__item"
@@ -8,16 +12,43 @@
       >
         <router-link class="boards-list__link" :to="{ name: 'Board', params: { id: board.id } }">
           {{ board.name }}
-          <button @click.stop.prevent="removeBoard(board.id)" :disabled="boards.length === 1">Remove</button>
+          <button @click.stop.prevent="onRemoveBoard(board)" :disabled="boards.length === 1">x</button>
         </router-link>
       </li>
     </ul>
+
+    <modal :open="modals.create" title="Create new board" @close="modals.create = false">
+      <form @submit.prevent="createBoard">
+        <input type="text" placeholder="Name" v-model="form.name" />
+        <button type="submit">Create board</button>
+      </form>
+    </modal>
+
+    <modal :open="modals.remove" title="Remove this board?" @close="modals.remove = false">
+      <form @submit.prevent="removeBoard">
+        <button type="button">Cancel</button>
+        <button type="submit">Yes, remove board</button>
+      </form>
+    </modal>
   </div>
 </template>
 
 <script>
+import Modal from '@/components/Modal';
 export default {
   name: 'BoardsList',
+  data() {
+    return {
+      form: {
+        name: '',
+      },
+      modals: {
+        create: false,
+        remove: false,
+      },
+      selectedBoard: {},
+    };
+  },
   computed: {
     boards() {
       return this.$store.getters['boards/boards'];
@@ -30,20 +61,36 @@ export default {
     this.fetchBoards();
   },
   methods: {
+    createBoard() {
+      return this.$store.dispatch('boards/create', this.form)
+        .then((board) => {
+          this.form.name = '';
+          this.modals.create = false;
+          this.$router.push({ name: 'Board', params: { id: board.id } });
+        });
+    },
     fetchBoards() {
       return this.$store.dispatch('boards/fetch');
     },
     clearBoards() {
       return this.$store.dispatch('boards/clear');
     },
-    removeBoard(id) {
-      this.$store.dispatch('boards/remove', id)
-        .then(() => this.$router.push({ name: 'Home' }));
+    removeBoard() {
+      this.$store.dispatch('boards/remove', this.selectedBoard.id)
+        .then(() => {
+          this.modals.remove = false;
+          this.$router.push({ name: 'Home' });
+        });
+    },
+    onRemoveBoard(board) {
+      this.selectedBoard = board;
+      this.modals.remove = true;
     },
   },
   beforeDestroy() {
     this.clearBoards(); 
   },
+  components: { Modal }
 };
 </script>
 
@@ -67,5 +114,16 @@ export default {
 }
 .boards-list__link.is-active {
   background-color: hsla(0, 0%, 0%, 0.3);
+}
+
+.boards-header {
+  padding: 4px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.boards-header__title {
+  font-weight: bold;
 }
 </style>
