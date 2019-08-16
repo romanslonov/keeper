@@ -155,13 +155,14 @@ const uploadFiles = async (req, res) => {
 
 const getFiles = async (req, res) => {
     const { id } = req.params;
+    const { user } = req;
     let connection;
     try {
         connection = await pool.getConnection();
 
         const files = await connection.query(
-            'SELECT * FROM `files` WHERE `deletedAt` IS NULL AND `boardId` = (?) ORDER BY `uploadedAt` DESC',
-            [id]
+            'SELECT * FROM `files` WHERE `deletedAt` IS NULL AND `boardId` = ? AND userId = ? ORDER BY `uploadedAt` DESC',
+            [id, user.id]
         );
 
         res.status(200).json({ files: files[0] });
