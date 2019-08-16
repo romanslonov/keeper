@@ -11,8 +11,6 @@ const s3 = new AWS.S3({
 const getAll = async (req, res) => {
     const { user } = req;
 
-    console.log(user);
-
     let connection;
     try {
         connection = await pool.getConnection();
@@ -95,10 +93,10 @@ const remove = async (req, res) => {
             try {
                 await s3.deleteObjects(params).promise();
                 await connection.query('UPDATE `files` SET `deletedAt` = ? WHERE `key` IN ?', [now, [filesKeys.map(file => file.key)]]);
+                return res.status(200).json({});
             } catch {
                 return res.status(500).json({ message: 'Internal server error' });
             }
-            return res.status(200).json({});
         }
         
         res.status(200).json({});
