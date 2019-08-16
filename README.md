@@ -6,5 +6,8 @@ This app was made to help you to keep and orginize all your assets (images/video
 
 - [x] Boards (like folders, to orginize assets)
 - [x] Upload assets (images/videos) to S3
+- [ ] Sharing between peoples
+- [ ] Sharing short url
+- [ ] Fullview photos 
 - [ ] Search
 - [ ] Chrome extension to upload assets directly from webpage 
