@@ -9,11 +9,15 @@ const s3 = new AWS.S3({
 });
 
 const getAll = async (req, res) => {
+    const { user } = req;
+
+    console.log(user);
+
     let connection;
     try {
         connection = await pool.getConnection();
 
-        const boards = await connection.query('SELECT * FROM boards WHERE deletedAt IS NULL');
+        const boards = await connection.query('SELECT id, name, createdAt FROM boards WHERE deletedAt IS NULL AND userId = ?', [user.id]);
 
         res.status(200).json({ boards: boards[0] });
     } catch(error) {
