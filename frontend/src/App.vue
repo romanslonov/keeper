@@ -6,7 +6,7 @@
 
 <style>
 :root {
-  --body-text-color: black;
+  --body-text-color: #2c3e50;
   --body-bg-color: white;
   --border-color: #E0E4EC;
 
@@ -26,7 +26,6 @@ body {
   font-family: 'Roboto', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
   background-color: var(--body-bg-color);
   color: var(--body-text-color);
 }

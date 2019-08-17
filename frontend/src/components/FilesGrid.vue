@@ -27,15 +27,6 @@ export default {
     },
   },
   methods: {
-    select(file) {
-      if (this.selected.includes(file)) {
-        this.selected = this.selected.filter(s => s.id !== file.id);
-        this.$emit('deselect', file);
-      } else {
-        this.selected.push(file);
-        this.$emit('select', file);
-      }
-    },
     isActive(file) {
       return this.selected.includes(file);
     },
