@@ -57,6 +57,11 @@ export default {
   position: relative;
 }
 
+.files-grid-item:hover > .files-grid-item__checkbox,
+.files-grid-item--active > .files-grid-item__checkbox {
+  display: block;
+}
+
 .files-grid-item__container {
   display: flex;
   align-items: center;
@@ -92,6 +97,7 @@ export default {
 }
 
 .files-grid-item__checkbox {
+  display: none;
   position: absolute;
   top: 8px;
   left: 8px;
