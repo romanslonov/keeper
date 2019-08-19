@@ -6,7 +6,7 @@
       </div>
       <div class="files-grid-item__name">{{ file.name }}</div>
       <div class="files-grid-item__checkbox">
-        <input v-model="selected" :value="file" type="checkbox" name="item-checkbox" :id="file.id">
+        <input @change="$emit('select', selected)" v-model="selected" :value="file" type="checkbox" name="item-checkbox" :id="file.id">
       </div>
     </div>
   </div>
