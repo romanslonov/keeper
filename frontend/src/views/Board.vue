@@ -22,7 +22,7 @@
 
         <drag @uploaded="onUpload" />
 
-        <files-grid :files="files" @select="onSelect" @deselect="onDeselect" />
+        <files-grid :files="files" @select="onSelect" />
     </div>
 </template>
 
@@ -96,11 +96,8 @@ export default {
         onUpload(files) {
             this.files = [...this.files, ...files];
         },
-        onSelect(file) {
-            this.selected.push(file);
-        },
-        onDeselect(file) {
-            this.selected = this.selected.filter(s => s.id !== file.id);
+        onSelect(selected) {
+            this.selected = selected;
         },
     },
     watch: {
