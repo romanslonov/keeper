@@ -101,7 +101,7 @@ export default {
       return this.$store.dispatch('boards/fetch');
     },
     removeBoard() {
-      this.$store.dispatch("board/remove", this.selectedBoard.id).then(() => {
+      this.$store.dispatch("boards/remove", this.selectedBoard.id).then(() => {
         this.modals.remove = false;
         this.$router.push({ name: "Home" });
       });
