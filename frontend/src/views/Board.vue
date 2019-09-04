@@ -34,7 +34,6 @@ export default {
     name: 'Board',
     data() {
         return {
-            board: {},
             files: [],
             selected: [],
 
@@ -44,24 +43,15 @@ export default {
         };
     },
     computed: {
-        boards() {
-            return this.$store.getters['boards/boards'];
+        board() {
+            return this.$store.getters['board/board'];
         },
     },
     created() {
-        this.fetchBoard(this.$route.params.id);
+        this.$store.dispatch('board/fetch', this.$route.params.id)
+            .then(() => this.fetchImages());
     },
     methods: {
-        fetchBoard(id) {
-            return this.$fetch(`/boards/${id}/`)
-                .then(response => response.json())
-                .then(({ board }) => {
-                    this.board = board;
-
-                    this.fetchImages();
-                })
-                .catch(err => console.log(err));
-        },
         fetchImages() {
             const { id } = this.$route.params;
             return this.$fetch(`/boards/${id}/files/`)
@@ -102,7 +92,8 @@ export default {
     },
     watch: {
         '$route.params.id': function(id) {
-            this.fetchBoard(id);
+            this.$store.dispatch('board/fetch', id)
+                .then(() => this.fetchImages());
             this.selected = [];
         },
     },

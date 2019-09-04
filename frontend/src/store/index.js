@@ -3,13 +3,13 @@ import Vuex from 'vuex';
 import Auth from '@/Auth';
 import fetch from '@/fetch';
 
-import boards from '@/store/modules/boards';
+import board from '@/store/modules/board';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   modules: {
-    boards,
+    board,
   },
   state: {
     user: null,
