@@ -65,7 +65,7 @@ const create = async (req, res) => {
         const { user } = req;
 
         const response = await connection.query('INSERT INTO boards (ownerId, name) VALUES (?, ?)', [user.id, name]);
-        const board = await connection.query('SELECT id, name, createdAt FROM boards WHERE id =  (?)', [response[0].insertId]);
+        const board = await connection.query('SELECT `id`, `ownerId`, `name`, `createdAt` FROM boards WHERE id =  (?)', [response[0].insertId]);
 
         await connection.query('INSERT INTO usersBoards (userId, boardId) VALUES (?, ?)', [user.id,  response[0].insertId])
 
