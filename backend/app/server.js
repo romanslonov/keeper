@@ -34,19 +34,8 @@ app.use((err, req, res, next) => {
     next();
 });
 
-if (process.env.NODE_ENV === 'production') {
-    http
-        .createServer(app)
-        .listen(process.env.PORT, process.env.HOSTNAME, () => {
-            console.log(`Server running at http://${process.env.HOSTNAME}:${process.env.PORT}`);
-        });
-} else {
-    https
-    .createServer({
-        key: fs.readFileSync('app/security/server.key'), 
-        cert: fs.readFileSync('app/security/server.crt'),
-    }, app)
-    .listen(process.env.PORT, () => {
-        console.log('Server running at https://localhost:3000');
+http
+    .createServer(app)
+    .listen(process.env.PORT, process.env.HOSTNAME, () => {
+        console.log(`Server running at http://${process.env.HOSTNAME}:${process.env.PORT}`);
     });
-}
