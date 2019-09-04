@@ -91,7 +91,7 @@ export default {
       const emails = this.shareForm.emails.replace(/ /g, "").split(",");
 
       return this.$store
-        .dispatch("boards/share", { id: this.selectedBoard.id, emails })
+        .dispatch("board/share", { id: this.selectedBoard.id, emails })
         .then(board => {
           this.shareForm.emails = "";
           this.modals.share = false;
