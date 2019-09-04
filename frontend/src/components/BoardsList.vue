@@ -100,9 +100,12 @@ export default {
         });
     },
     removeBoard() {
-      this.$store.dispatch("boards/remove", this.selectedBoard.id).then(() => {
-        this.modals.remove = false;
-        this.$router.push({ name: "Home" });
+      const { id } = this.selectedBoard;
+      this.$fetch(`/boards/${id}/`, { method: 'DELETE' })
+        .then(() => {
+          this.boards = this.boards.filter(board => board.id !== id);
+          this.modals.remove = false;
+          this.$router.push({ name: "Home" });
       });
     },
     onRemoveBoard(board) {
