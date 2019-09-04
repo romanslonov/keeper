@@ -15,7 +15,13 @@ const getAll = async (req, res) => {
     try {
         connection = await pool.getConnection();
 
-        const boards = await connection.query('SELECT id, name, createdAt FROM boards WHERE deletedAt IS NULL AND userId = ?', [user.id]);
+        // const boards = await connection.query('SELECT id, name, createdAt FROM boards WHERE deletedAt IS NULL AND userId = ?', [user.id]);
+
+        let [ids] = await connection.query('SELECT `boardId` FROM `usersBoards` WHERE `userId` = ?', [user.id]);
+
+        ids = ids.map(v => v.boardId);
+
+        const boards = await connection.query('SELECT `id`, `name`, `ownerId`, `createdAt` FROM `boards` WHERE `deletedAt` IS NULL AND `id` IN (?)', [ids]);
 
         res.status(200).json({ boards: boards[0] });
     } catch(error) {
@@ -33,7 +39,7 @@ const getOne = async (req, res) => {
 
         const { id } = req.params;
 
-        const response = await connection.query('SELECT id, name, createdAt FROM boards WHERE `id` = ? AND `deletedAt` IS NULL', [id]);
+        const response = await connection.query('SELECT `id`, `name`, `createdAt`, `ownerId` FROM boards WHERE `id` = ? AND `deletedAt` IS NULL', [id]);
         
         const board = response[0][0];
 
@@ -58,8 +64,10 @@ const create = async (req, res) => {
         const { name } = req.body;
         const { user } = req;
 
-        const response = await connection.query('INSERT INTO boards (userId, name) VALUES (?, ?)', [user.id, name]);
+        const response = await connection.query('INSERT INTO boards (ownerId, name) VALUES (?, ?)', [user.id, name]);
         const board = await connection.query('SELECT id, name, createdAt FROM boards WHERE id =  (?)', [response[0].insertId]);
+
+        await connection.query('INSERT INTO usersBoards (userId, boardId) VALUES (?, ?)', [user.id,  response[0].insertId])
 
         res.status(201).json({ board: board[0][0] });
     } catch(error) {
@@ -116,35 +124,44 @@ const uploadFiles = async (req, res) => {
     try {
         connection = await pool.getConnection();
 
-        const queries = files.map((file) => {
-            return connection.query(
-                'INSERT INTO files SET ?',
-                {
-                    userId: user.id,
-                    boardId: id || 1,
-                    name: file.originalname,
-                    bucket: file.bucket,
-                    etag: file.etag,
-                    size: file.size,
-                    mimeType: file.mimetype,
-                    key: file.key,
-                    url: file.location,
-                }
-            );
-        });
-
-        let response = await Promise.all(queries);
-
-        response = response.map(res => ({ ...res[0] }));
-
-        const requested = response.map(res => (`${res.insertId}`));
-
-        const [filesBD] = await connection.query(
-            'SELECT * FROM files WHERE id IN (?)',
-            [requested],
+        const [board] = await connection.query(
+            'SELECT * FROM `usersBoards` WHERE `boardId` = ? AND `userId` = ?',
+            [id, user.id]
         );
 
-        res.status(200).json({ files: filesBD });
+        if (board[0]) {
+            const queries = files.map((file) => {
+                return connection.query(
+                    'INSERT INTO files SET ?',
+                    {
+                        userId: user.id,
+                        boardId: id || 1,
+                        name: file.originalname,
+                        bucket: file.bucket,
+                        etag: file.etag,
+                        size: file.size,
+                        mimeType: file.mimetype,
+                        key: file.key,
+                        url: file.location,
+                    }
+                );
+            });
+    
+            let response = await Promise.all(queries);
+    
+            response = response.map(res => ({ ...res[0] }));
+    
+            const requested = response.map(res => (`${res.insertId}`));
+    
+            const [filesBD] = await connection.query(
+                'SELECT * FROM `files` WHERE `id` IN (?)',
+                [requested],
+            );
+    
+            return res.status(200).json({ files: filesBD });
+        }
+
+        return res.status(500).json({ message: 'Internal server error' });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: 'Internal server error' });
@@ -160,12 +177,21 @@ const getFiles = async (req, res) => {
     try {
         connection = await pool.getConnection();
 
-        const files = await connection.query(
-            'SELECT * FROM `files` WHERE `deletedAt` IS NULL AND `boardId` = ? AND userId = ? ORDER BY `uploadedAt` DESC',
+        const [board] = await connection.query(
+            'SELECT * FROM `usersBoards` WHERE `boardId` = ? AND `userId` = ?',
             [id, user.id]
         );
 
-        res.status(200).json({ files: files[0] });
+        if (board[0]) {
+            const files = await connection.query(
+                'SELECT * FROM `files` WHERE `deletedAt` IS NULL AND `boardId` = ? ORDER BY `uploadedAt` DESC',
+                [id, user.id]
+            );
+    
+            return res.status(200).json({ files: files[0] });
+        }
+
+        return res.status(500).json({ message: 'Internal server error' });
     } catch(error) {
         console.log(error);
         return res.status(500).json({ message: 'Internal server error' });
@@ -225,6 +251,42 @@ const moveFiles = async (req, res) => {
     }
 };
 
+const share = async (req, res) => {
+    const boardId = req.params.id;
+    const emails = req.body;
+
+    let connection;
+
+    try {
+        connection = await pool.getConnection();
+
+        const reqs = emails.map((email) => {
+            return connection.query('SELECT `id` FROM `users` WHERE `email` = ?', [email]);
+        });
+
+        const [users] = await Promise.all(reqs);
+
+        if (users.length > 0) {
+            await Promise.all(users[0].map((user) => {
+                console.log(user);
+                return connection.query('INSERT INTO `usersBoards` SET ?', {
+                    userId: user.id,
+                    boardId,
+                })
+            }))
+
+            return res.status(204).json({});
+        }
+        
+        return res.status(404).json({ message: 'Not found' });
+    } catch(error) {
+        console.log(error);
+        return res.status(500).json({ message: 'Internal server error' });
+    } finally {
+        if (connection) return connection.release();
+    }
+};
+
 module.exports = {
     getAll,
     getOne,
@@ -234,4 +296,5 @@ module.exports = {
     getFiles,
     removeFiles,
     moveFiles,
+    share,
 };
