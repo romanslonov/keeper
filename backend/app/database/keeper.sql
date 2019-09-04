@@ -16,17 +16,29 @@ VALUES
 
 CREATE TABLE boards (
   id int(11) NOT NULL AUTO_INCREMENT,
-  userId int(11) NOT NULL,
+  ownerId int(11) NOT NULL,
   name varchar(255) NOT NULL,
   createdAt datetime DEFAULT CURRENT_TIMESTAMP,
   deletedAt datetime NULL,
   PRIMARY KEY (id),
-  FOREIGN KEY (userId) REFERENCES users(id)
+  FOREIGN KEY (ownerId) REFERENCES users(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO boards (id, userId, name, createdAt)
+INSERT INTO boards (id, ownerId, name, createdAt)
 VALUES
 	(1, 1, 'Default', '1970-01-01 00:00:01');
+
+
+CREATE TABLE usersBoards (
+  userId int(11) NOT NULL,
+  boardId int(11) NOT NULL,
+  FOREIGN KEY (userId) REFERENCES users(id),
+  FOREIGN KEY (boardId) REFERENCES boards(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO usersBoards (userId, boardId)
+VALUES 
+  (1, 1);
   
 CREATE TABLE files (
   id int(11) NOT NULL AUTO_INCREMENT,
