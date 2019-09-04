@@ -4,12 +4,14 @@ import Auth from '@/Auth';
 import fetch from '@/fetch';
 
 import board from '@/store/modules/board';
+import boards from '@/store/modules/boards';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   modules: {
     board,
+    boards,
   },
   state: {
     user: null,

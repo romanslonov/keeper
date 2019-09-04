@@ -12,7 +12,7 @@ export default {
         isCurrentUserOwner: (state, getters, rootGetters) => state.board.ownerId === rootGetters.user.id,
     },
     mutations: {
-        fetch(state, board) {
+        set(state, board) {
             state.board = board;
             state.fetched = true;
         },
@@ -25,10 +25,13 @@ export default {
         fetch({ commit }, id) {
             return fetch(`/boards/${id}`)
                 .then(response => response.json())
-                .then(({ board }) => commit('fetch', board))
+                .then(({ board }) => commit('set', board))
                 .catch((error) => {
                     throw error;
                 });
+        },
+        set({ commit }, board) {
+            return commit('set', board)
         },
         clear({ commit }) {
             commit('clear')

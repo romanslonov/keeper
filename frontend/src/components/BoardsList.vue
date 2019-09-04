@@ -9,15 +9,15 @@
         <router-link class="boards-list__link" :to="{ name: 'Board', params: { id: board.id } }">
           {{ board.name }}
           <div v-if="isCurrentUserOwner(board)">
-            <button @click.stop.prevent="onBoardClick('share', board)">
-              Share
-            </button>
+            <button @click.stop.prevent="onBoardClick('share', board)">Share</button>
             <button
               @click.stop.prevent="onBoardClick('remove', board)"
               :disabled="boards.length === 1"
             >x</button>
           </div>
-          <div v-else><small>Shared</small></div>
+          <div v-else>
+            <small>Shared</small>
+          </div>
         </router-link>
       </li>
     </ul>
@@ -51,8 +51,6 @@ export default {
   name: "BoardsList",
   data() {
     return {
-      boards: [],
-      fetched: false,
       createForm: {
         name: ""
       },
@@ -67,6 +65,14 @@ export default {
       selectedBoard: {}
     };
   },
+  computed: {
+    boards() {
+      return this.$store.getters["boards/boards"];
+    },
+    fetched() {
+      return this.$store.getters["boards/fetched"];
+    }
+  },
   created() {
     this.fetchBoards();
   },
@@ -75,7 +81,7 @@ export default {
       return this.$store
         .dispatch("boards/create", this.createForm)
         .then(board => {
-          this.boards.push(board);
+          this.$store.dispatch("board/set", board);
           this.createForm.name = "";
           this.modals.create = false;
           this.$router.push({ name: "Board", params: { id: board.id } });
@@ -92,20 +98,12 @@ export default {
         });
     },
     fetchBoards() {
-      return this.$fetch("/boards/")
-        .then(response => response.json())
-        .then(({ boards }) => {
-          this.fetched = true;
-          this.boards = boards;
-        });
+      return this.$store.dispatch('boards/fetch');
     },
     removeBoard() {
-      const { id } = this.selectedBoard;
-      this.$fetch(`/boards/${id}/`, { method: 'DELETE' })
-        .then(() => {
-          this.boards = this.boards.filter(board => board.id !== id);
-          this.modals.remove = false;
-          this.$router.push({ name: "Home" });
+      this.$store.dispatch("board/remove", this.selectedBoard.id).then(() => {
+        this.modals.remove = false;
+        this.$router.push({ name: "Home" });
       });
     },
     onRemoveBoard(board) {

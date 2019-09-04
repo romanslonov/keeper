@@ -46,6 +46,9 @@ export default {
         board() {
             return this.$store.getters['board/board'];
         },
+        boards() {
+            return this.$store.getters['boards/boards'];
+        },
     },
     created() {
         this.$store.dispatch('board/fetch', this.$route.params.id)
