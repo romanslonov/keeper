@@ -21,9 +21,12 @@ const getAll = async (req, res) => {
 
         ids = ids.map(v => v.boardId);
 
-        const boards = await connection.query('SELECT `id`, `name`, `ownerId`, `createdAt` FROM `boards` WHERE `deletedAt` IS NULL AND `id` IN (?)', [ids]);
-
-        res.status(200).json({ boards: boards[0] });
+        if (ids.length > 0) {
+            const boards = await connection.query('SELECT * FROM `boards` WHERE `deletedAt` IS NULL AND `id` IN (?)', [ids]);
+            return res.status(200).json({ boards: boards[0] });
+        }
+        
+        return res.status(200).json({ boards: [] });
     } catch(error) {
         console.log(error);
         return res.status(500).json({ message: 'Internal server error' });
