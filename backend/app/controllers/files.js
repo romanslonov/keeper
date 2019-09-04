@@ -6,7 +6,10 @@ const getAll = async (req, res) => {
     try {
         connection = await pool.getConnection();
 
-        const files = await connection.query('SELECT * FROM `files` WHERE `deletedAt` IS NULL ORDER BY `uploadedAt` DESC');
+        const boards = await connection.query('SELECT * FROM `usersBoards` WHERE `userId` = ?', [user.id]);
+        const ids = boards[0].map(board => board.boardId);
+        
+        const files = await connection.query('SELECT * FROM `files` WHERE `deletedAt` IS NULL AND `id` IN (?) ORDER BY `uploadedAt` DESC', [ids]);
 
         res.status(200).json({ files: files[0] });
     } catch(error) {
