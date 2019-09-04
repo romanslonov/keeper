@@ -1,7 +1,11 @@
 <template>
   <div class="file" :class="{ 'file--active': active }" @click="open">
     <div class="file__container">
-      <img class="file__img" :src="`${file.url}`" :alt="file.name" />
+      <img 
+        class="file__img" 
+        :src="`${file.url}`" 
+        :alt="file.name"
+      />
     </div>
     <div class="file__name">{{ file.name }}</div>
     <div class="file__checkbox">
@@ -18,7 +22,12 @@
       <button class="file-overlay__close" @click.stop="close">x</button>
 
       <div class="file-overlay__container">
-        <img class="file-overlay__img" :src="file.url" :alt="file.name" />
+        <img 
+          ref="file" 
+          class="file-overlay__img" 
+          :src="file.url" 
+          :alt="file.name"
+        />
         <div class="file-overlay__meta">{{ file.name }}</div>
       </div>
     </div>
@@ -40,7 +49,7 @@ export default {
   },
   data() {
     return {
-      isOpen: false
+      isOpen: false,
     };
   },
   methods: {
@@ -121,13 +130,15 @@ export default {
 }
 
 .file-overlay__container {
-      width: 50%;
   display: flex;
   flex-direction: column;
 }
 
 .file-overlay__img {
-  width:100%;
+  width: auto;
+  max-width: 100%;
+  max-height: calc(100vh - 80px);
+
 }
 
 .file-overlay__close {
