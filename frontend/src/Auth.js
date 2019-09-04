@@ -5,7 +5,7 @@ class Auth {
      * @param {string} token
      */
     static authenticateUser(token) {
-      window.localStorage.setItem('token', token);
+      window.localStorage.setItem('keeperToken', token);
     }
   
     /**
@@ -14,7 +14,7 @@ class Auth {
      * @returns {boolean}
      */
     static isUserAuthenticated() {
-      return window.localStorage.getItem('token') !== null;
+      return window.localStorage.getItem('keeperToken') !== null;
     }
   
     /**
@@ -22,7 +22,7 @@ class Auth {
      *
      */
     static deauthenticateUser() {
-      window.localStorage.removeItem('token');
+      window.localStorage.removeItem('keeperToken');
     }
   
     /**
@@ -32,7 +32,7 @@ class Auth {
      */
   
     static getToken() {
-      return window.localStorage.getItem('token');
+      return window.localStorage.getItem('keeperToken');
     }
   }
   
