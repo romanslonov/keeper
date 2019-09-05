@@ -10,7 +10,7 @@ const getAll = async (req, res) => {
         const ids = boards[0].map(board => board.boardId);
 
         if (ids.length > 0) {
-            const files = await connection.query('SELECT * FROM `files` WHERE `deletedAt` IS NULL AND `id` IN (?) ORDER BY `uploadedAt` DESC', [ids]);
+            const files = await connection.query('SELECT * FROM `files` WHERE `deletedAt` IS NULL AND `boardId` IN (?) ORDER BY `uploadedAt` DESC', [ids]);
 
             return res.status(200).json({ files: files[0] });
         }
