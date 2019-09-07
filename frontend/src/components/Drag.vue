@@ -19,6 +19,18 @@ export default {
         document.body.addEventListener('dragover', this.handleDragOver);
         document.body.addEventListener('dragleave', this.handleDragLeave);
         document.body.addEventListener('drop', this.handleDrop);
+
+        window.addEventListener('paste', (pasteEvent) => {
+            const items = [
+                ...(event.clipboardData || event.originalEvent.clipboardData).items
+                ]
+                .filter(item => item.type.indexOf('image') != -1)
+                .map(item => item.getAsFile());
+
+            if (items.length > 0) {
+                this.upload(items);
+            }
+        }, false);
     },
     computed: {},
     methods: {
