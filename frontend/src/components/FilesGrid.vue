@@ -1,7 +1,7 @@
 <template>
   <div class="files-grid">
     <file 
-      v-for="file in files" 
+      v-for="file in sortedFiles" 
       :file="file" 
       :key="file.id" 
       :active="isActive(file)" 
@@ -23,6 +23,11 @@ export default {
     files: {
       type: Array,
       default: () => []
+    },
+  },
+  computed: {
+    sortedFiles() {
+      return this.files.sort((a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt));
     },
   },
   methods: {
