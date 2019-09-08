@@ -19,18 +19,7 @@ export default {
         document.body.addEventListener('dragover', this.handleDragOver);
         document.body.addEventListener('dragleave', this.handleDragLeave);
         document.body.addEventListener('drop', this.handleDrop);
-
-        window.addEventListener('paste', (pasteEvent) => {
-            const items = [
-                ...(event.clipboardData || event.originalEvent.clipboardData).items
-                ]
-                .filter(item => item.type.indexOf('image') != -1)
-                .map(item => item.getAsFile());
-
-            if (items.length > 0) {
-                this.upload(items);
-            }
-        }, false);
+        document.body.addEventListener('paste', this.handlePaste, false);
     },
     computed: {},
     methods: {
@@ -57,6 +46,17 @@ export default {
 
             return false;
         },
+        handlePaste(pasteEvent) {
+            const items = [
+                ...(event.clipboardData || event.originalEvent.clipboardData).items
+                ]
+                .filter(item => item.type.indexOf('image') != -1)
+                .map(item => item.getAsFile());
+
+            if (items.length > 0) {
+                this.upload(items);
+            }
+        },
         upload(files) {
             const data = new FormData();
 
@@ -77,6 +77,7 @@ export default {
         document.body.removeEventListener('dragover', this.handleDragover);
         document.body.removeEventListener('dragleave', this.handleDragLeave);
         document.body.removeEventListener('drop', this.handleDrop);
+        document.body.removeEventListener('paste', this.handlePaste, false);
     },
     components: { VButton },
 }
