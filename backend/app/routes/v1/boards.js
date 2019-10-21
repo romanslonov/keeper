@@ -31,6 +31,6 @@ module.exports = (app) => {
     app.post('/api/v1/boards/:id/files', checkAuthentication, load.array('files', 100), boardsController.uploadFiles);
     app.post('/api/v1/boards/:id/share', checkAuthentication, boardsController.share);
     app.delete('/api/v1/boards/:id', checkAuthentication, boardsController.remove);
-    app.delete('/api/v1/boards/:id/files', checkAuthentication, boardsController.removeFiles);
+    app.post('/api/v1/boards/:id/files/remove', checkAuthentication, boardsController.removeFiles);
     app.put('/api/v1/boards/:id/files', checkAuthentication, boardsController.moveFiles);
 }
