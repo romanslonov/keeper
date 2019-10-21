@@ -1,6 +1,5 @@
 const dotenv = require('dotenv');
 const express = require('express');
-const https = require('https');
 const http = require('http');
 const app = express();
 const fs = require('fs');
@@ -34,8 +33,10 @@ app.use((err, req, res, next) => {
     next();
 });
 
+const { PORT, HOSTNAME, NODE_ENV } = process.env;
+
 http
     .createServer(app)
-    .listen(process.env.PORT, process.env.HOSTNAME, () => {
-        console.log(`Server running at http://${process.env.HOSTNAME}:${process.env.PORT}`);
+    .listen(PORT, HOSTNAME, () => {
+        console.log(`Server running at http://${HOSTNAME}:${PORT} in ${NODE_ENV} mode`);
     });
