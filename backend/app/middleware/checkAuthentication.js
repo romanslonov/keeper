@@ -29,7 +29,7 @@ module.exports = async (req, res, next) => {
     req.token = decoded;
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ message: 'Internal server error' });
+    res.status(401).json({ message: 'Unauthorized' });
   } finally {
     if (connection) connection.release();
   }
