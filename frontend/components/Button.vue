@@ -1,5 +1,5 @@
 <template>
-  <button :class="classes" :disabled="disabled" @click="handleClick">
+  <button :class="classes" :disabled="disabled" class="button" @click="handleClick">
     <slot />
   </button>
 </template>
@@ -23,10 +23,10 @@ export default {
     classes () {
       return [
         'button',
-        this.appearance,
-        `size-${this.size}`,
-        { 'is-disabled': this.disabled },
-        { 'is-fullwidth': this.fullwidth }
+        `button--size-${this.size}`,
+        `button--${this.appearance}`,
+        { 'button--disabled': this.disabled },
+        { 'button--fullwidth': this.fullwidth }
       ]
     }
   },
@@ -50,30 +50,32 @@ export default {
     transition: background-color 100ms ease-in-out;
   }
 
-  .button.primary {
+  .button--primary {
     background-color: var(--primary);
     color: white;
   }
 
-  .button.primary:hover {
+  .button--primary:hover {
     background-color: darkblue;
   }
 
-  .button.size-3 {
-    height: 32px;
-  }
-
-  .button.size-4 {
+  .button--size-3 {
     height: 40px;
+    padding: 0 12px;
   }
 
-  .button.is-disabled {
+  .button--size-4 {
+    height: 48px;
+    padding: 0 16px;
+  }
+
+  .button--disabled {
     cursor: not-allowed;
     color: #445c7f;
     background-color: #e8ebf3;
   }
 
-  .button.is-fullwidth {
+  .button--fullwidth {
     width: 100%;
   }
 </style>
