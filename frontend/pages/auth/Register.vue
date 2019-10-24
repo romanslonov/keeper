@@ -65,7 +65,7 @@ export default {
     }
   },
   methods: {
-    login () {
+    register () {
       return this.$store.dispatch('register', this.form)
         .then(() => this.$router.push('/h'))
         .catch(err => window.console.log(err))
