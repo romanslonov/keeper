@@ -17,6 +17,7 @@ export default {}
     align-items: center;
     justify-content: center;
     background-color: var(--gray-200);
+    padding: 16px;
   }
 
   .auth-layout__wrapper {
@@ -25,7 +26,6 @@ export default {}
     padding: 32px;
     background-color: white;
     border-radius: 4px;
-    border: 1px solid var(--gray-300);
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
   }
 </style>
