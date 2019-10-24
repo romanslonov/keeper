@@ -10,7 +10,6 @@ const helmet = require('helmet');
 
 dotenv.config();
 
-app.use('/uploads', express.static('uploads'));
 app.use(helmet());
 app.use(cors());
 app.use(bodyParser.json());
@@ -38,5 +37,5 @@ const { PORT, HOSTNAME, NODE_ENV } = process.env;
 http
     .createServer(app)
     .listen(PORT, HOSTNAME, () => {
-        console.log(`Server running at http://${HOSTNAME}:${PORT} in ${NODE_ENV} mode`);
+        logger(`Server running at http://${HOSTNAME}:${PORT} in ${NODE_ENV} mode`);
     });

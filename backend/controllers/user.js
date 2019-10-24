@@ -3,15 +3,13 @@ const getProfile = (req, res) => {
 
   delete user.password;
 
-  res.status(200).json({ user: req.user });
+  return res.status(200).json({ user });
 };
 
 const getToken = (req, res) => {
   const { token } = req;
 
-  delete user.password;
-
-  res.status(200).json({ user: req.user });
+  return res.status(200).json({ token });
 };
 
 module.exports = {

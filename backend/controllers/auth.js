@@ -2,6 +2,8 @@ const jwt = require('jsonwebtoken');
 const pool = require('../db');
 const bcrypt = require('../services/bcrypt');
 
+const { JWT_SECRET } = process.env;
+
 exports.login = async (req, res) => {
   const { email, password } = req.body;
 
@@ -10,10 +12,7 @@ exports.login = async (req, res) => {
     try {
       connection = await pool.getConnection();
 
-      const [rows] = await connection.query(
-        'SELECT * FROM `users` WHERE `email` = ?', 
-        [email]
-      );
+      const [rows] = await connection.query('SELECT * FROM `users` WHERE `email` = ?', [email]);
 
       const user = {...rows[0]};
 
@@ -22,7 +21,7 @@ exports.login = async (req, res) => {
       }
 
       if (bcrypt.comparePassword(password, user.password)) {
-        const token = jwt.sign({ id: user.id }, 'secret');
+        const token = jwt.sign({ id: user.id }, JWT_SECRET);
 
         req.user = user;
 
@@ -49,18 +48,22 @@ exports.register = async (req, res) => {
     try {
         connection = await pool.getConnection();
 
-        const response = await connection.query(
+        const response1 = await connection.query(
             'INSERT INTO users SET ?', 
             { email, name, password: bcrypt.password(password) },
         );
 
-        const user = await connection.query(
-            'SELECT * FROM users WHERE id = ?', [response[0].insertId]
+        const response2 = await connection.query(
+            'SELECT * FROM users WHERE id = ?', [response1[0].insertId]
         );
 
-        const token = jwt.sign({ id: user[0].id }, 'secret', { expiresIn: 10800 });
+        const user = response2[0][0];
 
-        res.status(200).json({ token, user: user[0] });
+        delete user.password;
+
+        const token = jwt.sign({ id: user.id }, JWT_SECRET);
+
+        res.status(200).json({ token, user });
     } catch(error) {
         console.log(error);
         return res.status(500).json({ message: 'Internal server error' });
