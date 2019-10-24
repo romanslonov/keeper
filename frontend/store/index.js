@@ -35,7 +35,6 @@ export default {
     },
     register ({ commit }, payload) {
       return this.$axios.$post('/register', payload)
-        .then(response => response.json())
         .then(({ user, token }) => {
           commit('authenticate', { authenticated: true, user, token })
           Cookies.set('token', token)
