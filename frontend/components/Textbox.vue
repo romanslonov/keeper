@@ -2,11 +2,15 @@
   <label class="textbox">
     <span class="textbox__label">{{ label }}</span>
     <input
-      type="email"
+      :type="type"
       :placeholder="placeholder"
       :required="required"
       :class="classes"
       class="textbox__input"
+      @input="handleInput"
+      @change="handleChange"
+      @blur="handleBlur"
+      @focus="handleFocus"
     >
   </label>
 </template>
@@ -14,6 +18,10 @@
 <script>
 export default {
   props: {
+    type: {
+      type: String,
+      default: 'text'
+    },
     label: {
       type: String,
       default: ''
@@ -36,6 +44,20 @@ export default {
       return [
         `textbox--size-${this.size}`
       ]
+    }
+  },
+  methods: {
+    handleBlur (event) {
+      this.$emit('blur', event)
+    },
+    handleFocus (event) {
+      this.$emit('focus', event)
+    },
+    handleInput (event) {
+      this.$emit('input', event.target.value)
+    },
+    handleChange (event) {
+      this.$emit('change', event.target.value)
     }
   }
 }
