@@ -78,9 +78,6 @@ typings/
 # FuseBox cache
 .fusebox/
 
-# exclude cert and key for backend https
-backend/app/security
-
 # OS generated files
 .DS_Store
 .DS_Store?
@@ -90,7 +87,4 @@ backend/app/security
 ehthumbs.db
 Thumbs.db
 
-# uploaded files
-backend/uploads
-
-frontend
+__frontend

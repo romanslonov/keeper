@@ -1,0 +1,20 @@
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: var(--body-bg-color);
+    color: var(--body-text-color);
+}
+
+input::-moz-placeholder { color: var(--text-secondary); }
+input::-webkit-input-placeholder { color: var(--text-secondary); }
+input:-ms-input-placeholder { color: var(--text-secondary); }
+input::-ms-input-placeholder { color: var(--text-secondary); }
+input::placeholder { color: var(--text-secondary); }
