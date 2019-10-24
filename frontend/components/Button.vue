@@ -1,5 +1,5 @@
 <template>
-  <button :class="classes" :disabled="disabled" class="button" @click="handleClick">
+  <button :class="classes" :disabled="disabled" class="button" v-on="$listeners">
     <slot />
   </button>
 </template>
@@ -28,11 +28,6 @@ export default {
         { 'button--disabled': this.disabled },
         { 'button--fullwidth': this.fullwidth }
       ]
-    }
-  },
-  methods: {
-    handleClick (e) {
-      this.$emit('click', e)
     }
   }
 }
