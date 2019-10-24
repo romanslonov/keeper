@@ -2,11 +2,10 @@
 *:before,
 *:after {
     box-sizing: border-box;
-    margin: 0;
 }
 
 body {
-    font-family: 'Roboto', sans-serif;
+    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background-color: var(--body-bg-color);
@@ -18,3 +17,26 @@ input::-webkit-input-placeholder { color: var(--text-secondary); }
 input:-ms-input-placeholder { color: var(--text-secondary); }
 input::-ms-input-placeholder { color: var(--text-secondary); }
 input::placeholder { color: var(--text-secondary); }
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
+code,
+body,
+p {
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+    color: var(--primary);
+    font-weight: 600;
+}
+
+a:hover {
+
+}

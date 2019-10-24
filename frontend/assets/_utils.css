@@ -1,3 +1,7 @@
+.text-secondary {
+    color: var(--text-secondary);
+}
+
 .text-bold {
     font-weight: bold;
 }
