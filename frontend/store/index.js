@@ -34,15 +34,11 @@ export default {
         .catch(() => {})
     },
     register ({ commit }, payload) {
-      return fetch('/register', {
-        hasToken: false,
-        method: 'POST',
-        body: JSON.stringify(payload)
-      })
+      return this.$axios.$post('/register', payload)
         .then(response => response.json())
         .then(({ user, token }) => {
-          commit('USER_AUTHENTICATE', user)
-          // Auth.authenticateUser(token)
+          commit('authenticate', { authenticated: true, user, token })
+          Cookies.set('token', token)
           return { user, token }
         })
         .catch((err) => {
