@@ -1,7 +1,7 @@
 <template>
   <div class="sidebar">
     <div class="sidebar__logo">
-      <v-logo @click.native="$router.push('/h')" />
+      <v-logo />
     </div>
     <ul class="sidebar-list">
       <li class="sidebar-list__item">
@@ -33,7 +33,7 @@ export default {
   width: var(--sidebar-width);
   padding: 24px;
   background-color: var(--sidebar-bg-color);
-  border-right: 1px solid var(--border-color);
+  border-right: 2px solid var(--border-color);
 }
 
 .sidebar-list {
@@ -51,8 +51,8 @@ export default {
   border-radius: 3px;
   margin-bottom: 8px;
 }
-.sidebar-list__link.is-active {
-  background-color: hsla(0, 0%, 0%, 0.3);
+.sidebar-list__link.nuxt-link-active {
+  color: var(--primary);
 }
 .sidebar__logo {
   padding: 4px;

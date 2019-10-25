@@ -1,13 +1,14 @@
 <template>
-  <div class="logo">
+  <nuxt-link to="/h" class="logo">
     Keeper
-  </div>
+  </nuxt-link>
 </template>
 
 <style scoped>
     .logo {
         font-weight: bold;
         text-transform: uppercase;
-        font-size: 20px;
+        font-size: 24px;
+        color: var(--body-text-color);
     }
 </style>

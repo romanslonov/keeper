@@ -145,15 +145,13 @@ export default {
 
 <style>
 .boards-list__list {
-  padding: 0;
+  padding: 0 0 0 16px;
   margin: 0;
   list-style: none;
 }
-.boards-list__item {
-  margin-bottom: 8px;
-}
+.boards-list__item {}
 .boards-list__link {
-  color: var(--body-color);
+  color: var(--body-text-color);
   text-decoration: none;
   cursor: pointer;
   display: flex;
@@ -161,8 +159,8 @@ export default {
   padding: 4px;
   border-radius: 3px;
 }
-.boards-list__link.is-active {
-  background-color: hsla(0, 0%, 0%, 0.3);
+.boards-list__link.nuxt-link-active {
+  color: var(--primary);
 }
 
 .boards-header {

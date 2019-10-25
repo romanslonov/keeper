@@ -75,6 +75,7 @@ export default {
   display: flex;
   flex-direction: column;
   position: relative;
+  min-height: 140px;
 }
 
 .file:hover > .file__checkbox,

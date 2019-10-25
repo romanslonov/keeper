@@ -45,7 +45,7 @@ export default {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background-color: var(--gray);
+    background-color: var(--gray-400);
     flex-shrink: 0;
 }
 

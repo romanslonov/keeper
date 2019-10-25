@@ -38,6 +38,7 @@ export default {
     display: inline-block;
     font-size: 16px;
     font-family: inherit;
+    font-weight: 600;
     cursor: pointer;
     border: none;
     background-color: transparent;
