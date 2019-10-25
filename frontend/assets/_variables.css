@@ -1,21 +1,16 @@
 @import './_colors.css';
 
 :root {
-    --blue: hsl(230, 95%, 61%);
-    --wet-asphalt: hsl(229, 18%, 24%);
-    --gray: hsla(229, 18%, 50%, 1);
-
-    --body-text-color: var(--wet-asphalt);
+    --body-text-color: var(--gray-900);
     --body-bg-color: white;
-    --border-color: #E0E4EC;
-    --text-secondary: var(--gray);
 
-    --primary: var(--blue);
+    --border-color: var(--gray-300);
+    --text-secondary: var(--gray-700);
+
+    --primary: var(--indigo-700);
     --secondary: white;
-    --alternative: var(--wet-asphalt);
+    --alternative: var(--gray-900);
 
     --sidebar-width: 250px;
-    --sidebar-bg-color: #F6F8FB;
-
-    --search-bg-color: #F6F8FB;
+    --sidebar-bg-color: var(--gray-100);
 }
