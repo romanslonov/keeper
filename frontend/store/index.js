@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie'
 import board from '~/store/modules/board'
 import boards from '~/store/modules/boards'
+import queue from '~/store/modules/queue'
 
 export default {
   state () {
@@ -58,6 +59,7 @@ export default {
   },
   modules: {
     board,
-    boards
+    boards,
+    queue
   }
 }

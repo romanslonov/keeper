@@ -26,14 +26,30 @@ export default {
     onChange (e) {
       this.files = [...e.target.files]
 
-      this.upload(this.files)
+      this.files.forEach(file => this.upload(file))
     },
-    upload () {
+    upload (file) {
       const data = new FormData()
 
-      this.files.forEach(file => data.append('files', file))
+      data.append('files', file)
 
-      return this.$axios.$post(`/boards/${this.$route.params.id}/files/`, data)
+      const id = this.$store.getters['queue/queue'].length + 1
+
+      this.$store.commit('queue/add', {
+        id,
+        name: file.name,
+        progress: 0
+      })
+
+      return this.$axios.$post(`/boards/${this.$route.params.id}/files/`, data, {
+        onUploadProgress: (progressEvent) => {
+          this.$store.commit('queue/update', {
+            id,
+            progress: Math.round((progressEvent.loaded * 100) / progressEvent.total)
+          })
+          progressEvent.progress = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+        }
+      })
         .then(({ files }) => {
           this.$emit('uploaded', files)
 
@@ -54,6 +70,7 @@ export default {
   height: 100%;
   border: 2px dashed var(--border-color);
   outline: none;
+  border-radius: 4px;
 }
 .upload__button:hover,
 .upload__button:focus {

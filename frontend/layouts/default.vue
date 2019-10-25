@@ -9,16 +9,19 @@
     <div class="main-layout__sidebar">
       <sidebar />
     </div>
+
+    <upload-widget />
   </div>
 </template>
 
 <script>
 import Sidebar from '~/components/Sidebar'
 import TopHeader from '~/components/Header'
+import UploadWidget from '~/components/UploadWidget'
 export default {
   name: 'MainLayout',
   middleware: ['authenticated'],
-  components: { Sidebar, TopHeader }
+  components: { Sidebar, TopHeader, UploadWidget }
 }
 </script>
 
