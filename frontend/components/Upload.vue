@@ -2,7 +2,12 @@
   <div class="upload">
     <input ref="inputUpload" name="uploadarea" type="file" multiple hidden>
     <button class="upload__button" @click="$refs.inputUpload.click()">
-      Upload file
+      <span class="upload__title">
+        Upload file
+      </span>
+      <span class="upload__paragraph">
+        or Drop files here
+      </span>
     </button>
   </div>
 </template>
@@ -61,7 +66,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .upload__button {
   font-family: inherit;
   font-size: inherit;
@@ -75,5 +80,15 @@ export default {
 .upload__button:hover,
 .upload__button:focus {
   border-color: var(--primary);
+}
+.upload__title {
+  font-size: 20px;
+  display: block;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+.upload__paragraph {
+  font-size: 14px;
+  color: var(--text-secondary);
 }
 </style>

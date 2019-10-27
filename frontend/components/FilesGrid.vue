@@ -60,9 +60,9 @@ export default {
 
 <style>
 .files-grid {
-  --grid-item-size: 160px;
+  --grid-item-size: 200px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(var(--grid-item-size), 1fr));
-  grid-gap: 32px;
+  grid-gap: 16px;
 }
 </style>

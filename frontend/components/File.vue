@@ -1,6 +1,6 @@
 <template>
   <div class="file" :class="{ 'file--active': active }" @click="open">
-    <div class="file__container">
+    <div class="file__preview">
       <img
         class="file__img"
         :src="`${file.url}`"
@@ -8,8 +8,13 @@
         @dragstart.prevent
       >
     </div>
-    <div class="file__name">
-      {{ file.name }}
+    <div class="file__meta">
+      <div class="file__name">
+        {{ file.name }}
+      </div>
+      <div class="file__date">
+        {{ returnFormattedDate(file.uploadedAt) }}
+      </div>
     </div>
     <div class="file__checkbox">
       <input
@@ -42,8 +47,9 @@
 </template>
 
 <script>
+import { format } from 'date-fns'
+
 export default {
-  name: 'File',
   props: {
     file: {
       type: Object,
@@ -65,6 +71,9 @@ export default {
     },
     close () {
       this.isOpen = false
+    },
+    returnFormattedDate (date) {
+      return format(new Date(date), 'MMM dd, yyyy, h a')
     }
   }
 }
@@ -75,7 +84,11 @@ export default {
   display: flex;
   flex-direction: column;
   position: relative;
-  min-height: 140px;
+  /*min-height: 140px;*/
+  background-color: white;
+  border: 1px solid var(--gray-300);
+  border-radius: 3px;
+  padding: 4px;
 }
 
 .file:hover > .file__checkbox,
@@ -83,20 +96,23 @@ export default {
   display: block;
 }
 
+.file.file--active, .file:hover {
+  box-shadow: 0 0 12px 0 rgba(0,0,0,.2);
+}
+
 .file:focus {
   outline: none;
 }
 
-.file__container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-grow: 1;
-  border: 3px white solid;
-  border-radius: 4px;
+.file__preview {
+  height: 140px;
 }
 
-.file--active .file__container {
+.file__meta {
+  padding: 0 4px 8px;
+}
+
+.file.file--active {
   border-color: var(--primary);
 }
 
@@ -105,16 +121,23 @@ export default {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  margin-top: 12px;
+  margin: 12px 0 6px;
   width: 100%;
-  text-align: center;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.file__date {
+  font-size: 12px;
+  color: var(--text-secondary);
 }
 
 .file__img {
-  max-width: 100%;
-  height: auto;
-  max-height: var(--grid-item-size);
+  width: 100%;
+  min-height: 100%;
+  object-fit: cover;
   background-color: #fff;
+  border-radius: 3px;
 }
 
 .file__checkbox {
@@ -156,7 +179,7 @@ export default {
 }
 
 .file-overlay__meta {
-    color: white;
+  color: white;
   margin-top: 16px;
 }
 </style>

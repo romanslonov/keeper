@@ -4,7 +4,9 @@
       <h4>
         Uploading...
       </h4>
-      <button @click="clear">x</button>
+      <button @click="clear">
+        x
+      </button>
     </header>
     <ul class="upload-widget__list">
       <li v-for="file in files" :key="file.name" class="upload-widget-item">
@@ -47,6 +49,7 @@ export default {
     box-shadow: 0 0 20px 0 rgba(0,0,0,.2);
     border-radius: 4px;
     overflow: hidden;
+    min-width: 320px;
   }
   .upload-widget__header {
     display: flex;
