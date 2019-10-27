@@ -73,7 +73,7 @@ export default {
       this.isOpen = false
     },
     returnFormattedDate (date) {
-      return format(new Date(date), 'MMM dd, yyyy, h a')
+      return format(new Date(date), 'MMM dd, yyyy, h:mm a')
     }
   }
 }
