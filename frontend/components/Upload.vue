@@ -76,6 +76,7 @@ export default {
   border: 2px dashed var(--border-color);
   outline: none;
   border-radius: 4px;
+  padding: 16px 0;
 }
 .upload__button:hover,
 .upload__button:focus {

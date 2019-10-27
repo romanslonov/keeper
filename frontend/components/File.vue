@@ -81,10 +81,10 @@ export default {
 
 <style>
 .file {
+  --max-height-image: 140px;
   display: flex;
   flex-direction: column;
   position: relative;
-  /*min-height: 140px;*/
   background-color: white;
   border: 1px solid var(--gray-300);
   border-radius: 3px;
@@ -105,7 +105,7 @@ export default {
 }
 
 .file__preview {
-  height: 140px;
+  height: var(--max-height-image);
 }
 
 .file__meta {
@@ -135,6 +135,7 @@ export default {
 .file__img {
   width: 100%;
   min-height: 100%;
+  max-height: var(--max-height-image);
   object-fit: cover;
   background-color: #fff;
   border-radius: 3px;
