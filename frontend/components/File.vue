@@ -1,6 +1,6 @@
 <template>
-  <div class="file" :class="{ 'file--active': active }" @click="open">
-    <div class="file__preview">
+  <div class="file" :class="{ 'file--active': active }">
+    <div class="file__preview" @click="open">
       <img
         class="file__img"
         :src="`${file.url}`"

@@ -2,25 +2,32 @@
   <div class="boards-list">
     <div class="boards-header">
       <div class="boards-header__title">
+        <font-awesome-icon class="boards-list__icon" :icon="['fas', 'th-large']" />
         Boards
       </div>
       <button @click="modals.create = true">
-        +
+        <font-awesome-icon :icon="['fas', 'folder-plus']" />
       </button>
     </div>
     <ul v-if="fetched" class="boards-list__list">
       <li v-for="board in boards" :key="board.id" class="boards-list__item">
         <nuxt-link class="boards-list__link" :to="`/boards/${board.id}/`">
-          {{ board.name }}
+          <span>
+            <font-awesome-icon
+              class="boards-list__icon"
+              :icon="['fas', board.id === $route.params.id ? 'folder' : 'folder-open']"
+            />
+            {{ board.name }}
+          </span>
           <div v-if="isCurrentUserOwner(board)">
             <button @click.stop.prevent="onBoardClick('share', board)">
-              Share
+              <font-awesome-icon :icon="['fas', 'share']" />
             </button>
             <button
               :disabled="boards.length === 1"
               @click.stop.prevent="onBoardClick('remove', board)"
             >
-              x
+              <font-awesome-icon :icon="['fas', 'trash-alt']" />
             </button>
           </div>
           <div v-else>
@@ -149,9 +156,11 @@ export default {
   margin: 0;
   list-style: none;
 }
-.boards-list__item {}
+.boards-list__icon {
+  margin-right: 8px;
+}
 .boards-list__link {
-  color: var(--body-text-color);
+  color: var(--text-secondary);
   text-decoration: none;
   cursor: pointer;
   display: flex;
@@ -159,7 +168,12 @@ export default {
   padding: 4px;
   border-radius: 3px;
 }
+
 .boards-list__link.nuxt-link-active {
+  color: var(--body-text-color);
+}
+
+.boards-list__link.nuxt-link-active .boards-list__icon {
   color: var(--primary);
 }
 
@@ -171,6 +185,7 @@ export default {
   justify-content: space-between;
 }
 .boards-header__title {
-  font-weight: bold;
+  font-weight: 500;
+  color: var(--text-secondary);
 }
 </style>

@@ -6,7 +6,10 @@
     <ul class="sidebar-list">
       <li class="sidebar-list__item">
         <nuxt-link exact class="sidebar-list__link" to="/h">
-          Recent files
+          <span>
+            <font-awesome-icon class="sidebar-list__icon" :icon="['fas', 'archive']" />
+            Recent files
+          </span>
         </nuxt-link>
       </li>
     </ul>
@@ -41,8 +44,11 @@ export default {
   margin: 0;
   list-style: none;
 }
+.sidebar-list__icon {
+  margin-right: 8px;
+}
 .sidebar-list__link {
-  color: var(--body-text-color);
+  color: var(--text-secondary);
   text-decoration: none;
   cursor: pointer;
   display: flex;
@@ -52,6 +58,9 @@ export default {
   margin-bottom: 8px;
 }
 .sidebar-list__link.nuxt-link-active {
+  color: var(--body-text-color);
+}
+.sidebar-list__link.nuxt-link-active .sidebar-list__icon {
   color: var(--primary);
 }
 .sidebar__logo {
