@@ -63,15 +63,31 @@ export default {
         .map(item => item.getAsFile())
 
       if (items.length > 0) {
-        this.upload(items)
+        this.items.forEach(item => this.upload(item))
       }
     },
-    upload (files) {
+    upload (file) {
       const data = new FormData()
 
-      files.forEach(file => data.append('files', file))
+      data.append('files', file)
 
-      return this.$axios.$post(`/boards/${this.$route.params.id}/files/`, data)
+      const id = this.$store.getters['queue/queue'].length + 1
+
+      this.$store.commit('queue/add', {
+        id,
+        name: file.name,
+        progress: 0
+      })
+
+      return this.$axios.$post(`/boards/${this.$route.params.id}/files/`, data, {
+        onUploadProgress: (progressEvent) => {
+          this.$store.commit('queue/update', {
+            id,
+            progress: Math.round((progressEvent.loaded * 100) / progressEvent.total)
+          })
+          progressEvent.progress = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+        }
+      })
         .then(({ files }) => {
           this.$emit('uploaded', files)
         })
