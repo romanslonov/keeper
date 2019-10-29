@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h2 class="mb-3">
-      Home
+      Recent files
     </h2>
 
     <v-files-grid :uploadable="false" :files="files" />

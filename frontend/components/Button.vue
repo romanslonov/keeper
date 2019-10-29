@@ -17,7 +17,8 @@ export default {
       default: '3'
     },
     disabled: Boolean,
-    fullwidth: Boolean
+    fullwidth: Boolean,
+    icon: Boolean
   },
   computed: {
     classes () {
@@ -26,7 +27,8 @@ export default {
         `button--size-${this.size}`,
         `button--${this.appearance}`,
         { 'button--disabled': this.disabled },
-        { 'button--fullwidth': this.fullwidth }
+        { 'button--fullwidth': this.fullwidth },
+        { 'button--icon': this.icon }
       ]
     }
   }
@@ -55,6 +57,25 @@ export default {
     background-color: darkblue;
   }
 
+  .button--subtle {
+    color: var(--text-secondary);
+    background-color: transparent;
+  }
+
+  .button--subtle:hover {
+    color: black;
+    background-color: var(--gray-200);
+  }
+
+  .button--size-1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 24px;
+    padding: 0;
+    width: 24px;
+  }
+
   .button--size-3 {
     height: 40px;
     padding: 0 12px;
@@ -63,6 +84,10 @@ export default {
   .button--size-4 {
     height: 48px;
     padding: 0 16px;
+  }
+
+  .button--icon {
+    padding: 0;
   }
 
   .button--disabled {

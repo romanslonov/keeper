@@ -34,6 +34,8 @@ export default {
     font-size: inherit;
     border: none;
     text-align: initial;
+    padding: 0;
+    margin: 0;
 }
 
 .profile-view__name {
@@ -42,10 +44,10 @@ export default {
 }
 
 .profile-view__avatar {
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
-    background-color: var(--gray-400);
+    background-color: var(--gray-600);
     flex-shrink: 0;
 }
 

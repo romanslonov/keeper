@@ -2,7 +2,7 @@
 
 :root {
     --body-text-color: var(--gray-900);
-    --body-bg-color: var(--gray-100);
+    --body-bg-color: white;
 
     --border-color: var(--gray-300);
     --text-secondary: var(--gray-600);
@@ -12,5 +12,5 @@
     --alternative: var(--gray-900);
 
     --sidebar-width: 250px;
-    --sidebar-bg-color: white;
+    --sidebar-bg-color: var(--gray-100);
 }

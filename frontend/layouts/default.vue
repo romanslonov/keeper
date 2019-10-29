@@ -1,8 +1,8 @@
 <template>
   <div class="main-layout">
-    <div class="main-layout__header">
-      <top-header />
-    </div>
+    <!--    <div class="main-layout__header">-->
+    <!--      <top-header />-->
+    <!--    </div>-->
     <div class="main-layout__content">
       <nuxt />
     </div>
@@ -16,12 +16,11 @@
 
 <script>
 import Sidebar from '~/components/Sidebar'
-import TopHeader from '~/components/Header'
 import UploadWidget from '~/components/UploadWidget'
 export default {
   name: 'MainLayout',
   middleware: ['authenticated'],
-  components: { Sidebar, TopHeader, UploadWidget }
+  components: { Sidebar, UploadWidget }
 }
 </script>
 

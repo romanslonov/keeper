@@ -73,7 +73,7 @@ export default {
   cursor: pointer;
   width: 100%;
   height: 100%;
-  border: 2px dashed var(--border-color);
+  border: 1px dashed var(--border-color);
   outline: none;
   border-radius: 4px;
   padding: 16px 0;

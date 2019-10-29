@@ -123,7 +123,7 @@ export default {
   text-overflow: ellipsis;
   margin: 12px 0 6px;
   width: 100%;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: bold;
 }
 

@@ -71,7 +71,7 @@ export default {
   .textbox__input {
     font-size: inherit;
     font-family: inherit;
-    border: 2px solid var(--border-color);
+    border: 1px solid var(--border-color);
     border-radius: 3px;
     width: 100%;
     outline: none;
