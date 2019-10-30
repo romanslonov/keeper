@@ -49,7 +49,9 @@ export default {
 
       const files = [...e.dataTransfer.files]
 
-      this.upload(files)
+      if (files.length > 0) {
+        files.forEach(file => this.upload(file))
+      }
 
       this.isDragging = false
 
