@@ -9,8 +9,7 @@
         <v-button
           class="board-actions__item"
           size="1"
-          icon
-          appearance="subtle"
+          appearance="icon"
           @click="removeImages"
         >
           <font-awesome-icon style="font-size: 16px;" :icon="['fas', 'file-import']" />
@@ -19,8 +18,7 @@
         <v-button
           class="board-actions__item"
           size="1"
-          icon
-          appearance="subtle"
+          appearance="icon"
           @click="removeImages"
         >
           <font-awesome-icon style="font-size: 16px;" :icon="['fas', 'trash-alt']" />

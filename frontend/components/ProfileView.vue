@@ -1,7 +1,7 @@
 <template>
   <div class="profile-view">
     <button class="profile-view__button">
-      <div class="profile-view__avatar" />
+      <font-awesome-icon class="profile-view__avatar" :icon="['fas', 'user-astronaut']" />
       <div class="profile-view__content">
         <div class="profile-view__name">
           {{ user.name }}
@@ -36,6 +36,11 @@ export default {
     text-align: initial;
     padding: 0;
     margin: 0;
+    cursor: pointer;
+}
+
+.profile-view__button:hover .profile-view__avatar {
+  color: var(--primary);
 }
 
 .profile-view__name {
@@ -44,11 +49,8 @@ export default {
 }
 
 .profile-view__avatar {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background-color: var(--gray-600);
-    flex-shrink: 0;
+  font-size: 32px;
+  color: var(--text-secondary);
 }
 
 .profile-view__content {

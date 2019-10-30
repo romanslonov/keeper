@@ -4,9 +4,9 @@
       <h4>
         Uploading...
       </h4>
-      <button @click="clear">
-        x
-      </button>
+      <v-button invert appearance="icon" size="1" @click="clear">
+        <font-awesome-icon class="files-empty__icon" :icon="['fas', 'times']" />
+      </v-button>
     </header>
     <ul class="upload-widget__list">
       <li v-for="file in files" :key="file.name" class="upload-widget-item">
@@ -25,8 +25,10 @@
 </template>
 
 <script>
+import VButton from '~/components/Button'
 export default {
   name: 'UploadWidget',
+  components: { VButton },
   computed: {
     files () {
       return this.$store.getters['queue/queue']
@@ -67,7 +69,7 @@ export default {
 
   .upload-widget-item {
     font-size: 14px;
-    padding: 16px;
+    padding: 8px 16px;
     border-bottom: 1px solid var(--border-color);
   }
 
@@ -77,6 +79,7 @@ export default {
 
   .upload-widget-item__info {
     color: var(--text-secondary);
+    font-size: 12px;
   }
 
   .upload-widget-progress-bar {

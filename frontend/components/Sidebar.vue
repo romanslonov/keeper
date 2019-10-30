@@ -43,13 +43,12 @@
                 </span>
               </div>
               <div v-if="isCurrentUserOwner(board)" class="sidebar-list__side">
-                <v-button size="1" icon appearance="subtle" @click.stop.prevent="onBoardClick('share', board)">
+                <v-button size="1" appearance="icon" @click.stop.prevent="onBoardClick('share', board)">
                   <font-awesome-icon style="font-size: 12px;" :icon="['fas', 'share']" />
                 </v-button>
                 <v-button
                   size="1"
-                  icon
-                  appearance="subtle"
+                  appearance="icon"
                   :disabled="boards.length === 1"
                   @click.stop.prevent="onBoardClick('remove', board)"
                 >

@@ -18,7 +18,7 @@ export default {
     },
     disabled: Boolean,
     fullwidth: Boolean,
-    icon: Boolean
+    invert: Boolean
   },
   computed: {
     classes () {
@@ -28,7 +28,7 @@ export default {
         `button--${this.appearance}`,
         { 'button--disabled': this.disabled },
         { 'button--fullwidth': this.fullwidth },
-        { 'button--icon': this.icon }
+        { 'button--invert': this.invert }
       ]
     }
   }
@@ -67,13 +67,20 @@ export default {
     background-color: var(--gray-200);
   }
 
-  .button--size-1 {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 24px;
+  .button--icon {
+    height: auto;
     padding: 0;
-    width: 24px;
+    color: var(--text-secondary);
+    background-color: transparent;
+  }
+
+  .button--icon:not(.button--invert):hover {
+    color: var(--primary);
+  }
+
+  .button--size-1 {
+    height: 24px;
+    padding: 0 4px;
   }
 
   .button--size-3 {
@@ -86,8 +93,13 @@ export default {
     padding: 0 16px;
   }
 
-  .button--icon {
+  .button--size-1.button--icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 0;
+    height: 24px;
+    width: 24px;
   }
 
   .button--disabled {
@@ -98,5 +110,9 @@ export default {
 
   .button--fullwidth {
     width: 100%;
+  }
+
+  .button--invert {
+    color: white;
   }
 </style>
