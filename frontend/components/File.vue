@@ -16,7 +16,7 @@
         {{ returnFormattedDate(file.uploadedAt) }}
       </div>
     </div>
-    <div class="file__checkbox">
+    <div v-if="selectable" class="file__checkbox">
       <input
         :id="file.id"
         type="checkbox"
@@ -58,6 +58,10 @@ export default {
     active: {
       type: Boolean,
       default: false
+    },
+    selectable: {
+      type: Boolean,
+      default: true
     }
   },
   data () {

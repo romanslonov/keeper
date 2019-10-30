@@ -6,6 +6,7 @@
       :key="file.id"
       :file="file"
       :active="isActive(file)"
+      :selectable="selectable"
       @select="onSelect"
     />
   </div>
@@ -32,6 +33,10 @@ export default {
       default: () => []
     },
     uploadable: {
+      type: Boolean,
+      default: true
+    },
+    selectable: {
       type: Boolean,
       default: true
     }

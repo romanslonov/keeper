@@ -4,7 +4,7 @@
       Recent files
     </h2>
 
-    <v-files-grid :uploadable="false" :files="files" />
+    <v-files-grid :selectable="false" :uploadable="false" :files="files" />
 
     <v-drag />
   </div>
