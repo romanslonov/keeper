@@ -77,6 +77,7 @@ export default {
   outline: none;
   border-radius: 4px;
   padding: 16px 0;
+  background-color: transparent;
 }
 .upload__button:hover,
 .upload__button:focus {
