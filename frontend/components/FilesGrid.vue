@@ -1,5 +1,5 @@
 <template>
-  <div class="files-grid">
+  <div v-if="files.length > 0" class="files-grid">
     <upload v-if="uploadable" @uploaded="onUpload" />
     <file
       v-for="file in sortedFiles"
@@ -8,6 +8,15 @@
       :active="isActive(file)"
       @select="onSelect"
     />
+  </div>
+  <div v-else class="files-empty">
+    <font-awesome-icon class="files-empty__icon" :icon="['fas', 'file-upload']" />
+    <h1 class="files-empty__title">
+      Drop files here
+    </h1>
+    <p class="files-empty__paragraph">
+      to start uploading them
+    </p>
   </div>
 </template>
 
@@ -58,11 +67,31 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .files-grid {
   --grid-item-size: 200px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(var(--grid-item-size), 1fr));
   grid-gap: 16px;
+}
+.files-empty {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  min-height: 100%
+}
+.files-empty__icon {
+  font-size: 50px;
+  margin-bottom: 16px;
+  color: var(--primary);
+}
+.files-empty__title {
+  margin-bottom: 8px;
+}
+.files-empty__paragraph {
+  color: var(--text-secondary);
 }
 </style>

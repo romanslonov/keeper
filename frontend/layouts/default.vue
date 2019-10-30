@@ -25,12 +25,8 @@ export default {
 </script>
 
 <style>
-.main-layout__header {
-  padding-left: var(--sidebar-width);
-}
 .main-layout__content {
-  padding: 32px;
-  padding-left: calc(var(--sidebar-width) + 32px);
+  padding: 32px 32px 32px calc(var(--sidebar-width) + 32px);
   min-height: 100vh;
 }
 </style>

@@ -109,7 +109,7 @@ export default {
 }
 
 .file__meta {
-  padding: 0 4px 8px;
+  padding: 0 8px 8px;
 }
 
 .file.file--active {

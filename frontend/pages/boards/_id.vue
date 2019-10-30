@@ -1,24 +1,30 @@
 <template>
-  <div>
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-      <h2 class="mb-3">
+  <div class="board">
+    <div class="board__header">
+      <h2>
         Board: {{ board && board.name }}
       </h2>
 
-      <div>
-        <button :disabled="selected.length === 0" @click="moveImages">
-          Move ({{ selected.length }})
-        </button>
+      <div v-if="selected.length > 0" class="board-actions">
+        <v-button
+          class="board-actions__item"
+          size="1"
+          icon
+          appearance="subtle"
+          @click="removeImages"
+        >
+          <font-awesome-icon style="font-size: 16px;" :icon="['fas', 'file-import']" />
+        </v-button>
 
-        <select v-if="selected.length > 0" v-model="move.id" name="boards">
-          <option v-for="b in boards" :key="b.id" :value="b.id">
-            {{ b.name }}
-          </option>
-        </select>
-
-        <button :disabled="selected.length === 0" @click="removeImages">
-          Delete ({{ selected.length }})
-        </button>
+        <v-button
+          class="board-actions__item"
+          size="1"
+          icon
+          appearance="subtle"
+          @click="removeImages"
+        >
+          <font-awesome-icon style="font-size: 16px;" :icon="['fas', 'trash-alt']" />
+        </v-button>
       </div>
     </div>
 
@@ -33,12 +39,13 @@
 <script>
 import FilesGrid from '~/components/FilesGrid'
 import Drag from '~/components/Drag'
+import VButton from '~/components/Button'
 export default {
   meta: {
     requiredAuth: true
   },
   name: 'Board',
-  components: { FilesGrid, Drag },
+  components: { FilesGrid, Drag, VButton },
   data () {
     return {
       selected: [],
@@ -108,3 +115,24 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.board {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 64px);
+}
+.board__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.board-actions {
+  display: flex;
+  align-items: center;
+}
+.board-actions__item {
+  margin-left: 8px;
+}
+</style>
