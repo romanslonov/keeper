@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="home">
     <h2 class="mb-3">
       Recent files
     </h2>
@@ -30,3 +30,11 @@ export default {
   methods: {}
 }
 </script>
+
+<style scoped>
+.home {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 64px);
+}
+</style>
