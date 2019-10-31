@@ -3,7 +3,7 @@
     <div class="file__preview" @click="open">
       <img
         class="file__img"
-        :src="`${file.url}`"
+        :src="`${file.thumbnail}`"
         :alt="file.name"
         @dragstart.prevent
       >

@@ -50,6 +50,7 @@ CREATE TABLE files (
   size varchar(255) NOT NULL,
   mimeType varchar(255) NOT NULL,
   url varchar(255) NOT NULL,
+  thumbnail varchar(255) NOT NULL,
   `key` varchar(255) NOT NULL,
   uploadedAt datetime DEFAULT CURRENT_TIMESTAMP,
   deletedAt datetime NULL,

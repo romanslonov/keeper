@@ -1,5 +1,6 @@
 const pool = require('../db');
 const AWS = require('aws-sdk');
+const sharp = require('sharp');
 
 const s3 = new AWS.S3({
     accessKeyId: process.env.BUCKET_ACCESS_KEY,
@@ -7,6 +8,22 @@ const s3 = new AWS.S3({
     Bucket: process.env.BUCKET_NAME,
     endpoint: process.env.BUCKET_ENDPOINT,
 });
+
+const generateName = (file, timestamp, format) => `${file.mimetype.split('/')[0]}/${timestamp}/${format}.${file.originalname.split('.').pop()}`
+
+const uploadObject = (buffer, file, timestamp, format) => {
+    const params = {
+        Body: buffer,
+        Bucket: process.env.BUCKET_NAME,
+        Key: generateName(file, timestamp, format),
+        ACL: 'public-read',
+        CacheControl: 'max-age=604800',
+        ContentType: file.mimetype,
+    };
+
+    return s3.upload(params).promise();
+
+};
 
 const getAll = async (req, res) => {
     const { user } = req;
@@ -122,6 +139,7 @@ const remove = async (req, res) => {
 const uploadFiles = async (req, res) => {
     const { files, user } = req;
     const { id } = req.params;
+    const file = files[0];
     let connection;
 
     try {
@@ -133,34 +151,44 @@ const uploadFiles = async (req, res) => {
         );
 
         if (board[0]) {
-            const queries = files.map((file) => {
-                return connection.query(
-                    'INSERT INTO files SET ?',
-                    {
-                        userId: user.id,
-                        boardId: id || 1,
-                        name: file.originalname,
-                        bucket: file.bucket,
-                        etag: file.etag,
-                        size: file.size,
-                        mimeType: file.mimetype,
-                        key: file.key,
-                        url: file.location,
-                    }
-                );
-            });
-    
-            let response = await Promise.all(queries);
-    
-            response = response.map(res => ({ ...res[0] }));
-    
-            const requested = response.map(res => (`${res.insertId}`));
-    
-            const [filesBD] = await connection.query(
-                'SELECT * FROM `files` WHERE `id` IN (?)',
-                [requested],
+            const timestamp = Date.now().toString();
+
+            const original = await uploadObject(file.buffer, file, timestamp,'original');
+
+            const resizedBuffer = await sharp(file.buffer).resize(400, null).toBuffer().then((data) => data);
+
+            const thumbnail = await uploadObject(resizedBuffer, file, timestamp,'thumbnail');
+
+            const newFile = {
+                originalname: file.originalname,
+                mimetype: file.mimetype,
+                size: file.size,
+                bucket: original.Bucket,
+                key: original.Key,
+                url: original.Location,
+                etag: original.ETag,
+            };
+
+            let response = await connection.query(
+                'INSERT INTO files SET ?',
+                {
+                    userId: user.id,
+                    boardId: id || 1,
+                    name: newFile.originalname,
+                    bucket: newFile.bucket,
+                    etag: newFile.etag,
+                    size: newFile.size,
+                    mimeType: newFile.mimetype,
+                    key: newFile.key,
+                    url: newFile.url,
+                    thumbnail: thumbnail.Location,
+                }
             );
-    
+
+            const fileId = response[0].insertId;
+
+            const [filesBD] = await connection.query('SELECT * FROM `files` WHERE `id` = ?', [fileId]);
+
             return res.status(200).json({ files: filesBD });
         }
 
