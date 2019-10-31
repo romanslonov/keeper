@@ -92,6 +92,8 @@ export default {
       })
         .then(({ files }) => {
           this.$emit('uploaded', files)
+
+          this.$store.commit('queue/clear')
         })
         .catch(err => window.console.error(err))
     }

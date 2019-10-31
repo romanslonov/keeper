@@ -1,7 +1,12 @@
 <template>
   <div class="file" :class="{ 'file--active': active }">
     <div class="file__preview" @click="open">
+      <div v-if="!isLoaded" class="file__fake">
+        <font-awesome-icon class="files-empty__icon" :icon="['fas', 'file-image']" />
+      </div>
       <img
+        v-show="isLoaded"
+        ref="image"
         class="file__img"
         :src="`${file.thumbnail}`"
         :alt="file.name"
@@ -66,8 +71,17 @@ export default {
   },
   data () {
     return {
-      isOpen: false
+      isOpen: false,
+      isLoaded: false
     }
+  },
+  mounted () {
+    this.$refs.image.onload = () => {
+      this.isLoaded = true
+    }
+    // if (this.$refs.image) {
+    //   window.console.log(this.$refs.image)
+    // }
   },
   methods: {
     open () {
@@ -150,6 +164,15 @@ export default {
   position: absolute;
   top: 8px;
   left: 8px;
+}
+.file__fake {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background-color: var(--gray-200);
+  font-size: 30px;
+  color: var(--text-secondary);
 }
 
 .file-overlay {

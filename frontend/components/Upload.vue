@@ -60,6 +60,8 @@ export default {
           this.$emit('uploaded', files)
 
           this.files = []
+
+          this.$store.commit('queue/clear')
         })
         .catch(err => window.console.error(err))
     }

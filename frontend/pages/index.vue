@@ -1,8 +1,9 @@
 <template>
   <div class="container">
     <nav class="navigation">
-      <v-logo />
-
+      <nuxt-link to="/">
+        <font-awesome-icon class="navigation__logo" :icon="['fas', 'fill']" />
+      </nuxt-link>
       <div>
         <nuxt-link class="ml-3" to="/auth/login">
           Login
@@ -28,10 +29,9 @@
 
 <script>
 import VButton from '~/components/Button'
-import VLogo from '~/components/Logo'
 export default {
   layout: 'landing',
-  components: { VButton, VLogo },
+  components: { VButton },
   computed: {
     authenticated () {
       return this.$store.state.authenticated
@@ -66,5 +66,8 @@ export default {
     justify-content: space-between;
     align-items: center;
     padding: 32px 16px;
+  }
+  .navigation__logo {
+    font-size: 30px;
   }
 </style>
