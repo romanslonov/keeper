@@ -35,7 +35,7 @@ export default {
     clear ({ commit }) {
       commit('clear')
     },
-    share ({ id, emails }) {
+    share ({ commit }, { id, emails }) {
       return this.$axios.$post(`/boards/${id}/share/`, emails)
         .catch((error) => {
           throw error
