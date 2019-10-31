@@ -2,6 +2,7 @@
   <div class="upload">
     <input ref="inputUpload" name="uploadarea" type="file" multiple hidden>
     <button class="upload__button" @click="$refs.inputUpload.click()">
+      <font-awesome-icon class="upload__icon" :icon="['fas', 'file-upload']" />
       <span class="upload__title">
         Upload file
       </span>
@@ -82,6 +83,15 @@ export default {
 .upload__button:hover,
 .upload__button:focus {
   border-color: var(--primary);
+}
+.upload__button:hover .upload__icon,
+.upload__button:focus .upload__icon {
+  color: var(--primary);
+}
+.upload__icon {
+  font-size: 30px;
+  margin-bottom: 8px;
+  color: var(--text-secondary);
 }
 .upload__title {
   font-size: 20px;
