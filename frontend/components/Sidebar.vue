@@ -28,8 +28,15 @@
       </section>
 
       <section class="sidebar__section">
-        <h4 class="sidebar__title">
+        <h4 class="sidebar__title sidebar__title--with-button">
           Boards
+          <v-button
+            size="1"
+            appearance="icon"
+            @click="modals.create = true"
+          >
+            <font-awesome-icon :icon="['fas', 'folder-plus']" />
+          </v-button>
         </h4>
         <ul class="sidebar-list">
           <li v-for="board in boards" :key="board.id" class="sidebar-list__item">
@@ -206,8 +213,13 @@ export default {
 .sidebar__title {
   font-size: 14px;
   text-transform: uppercase;
-  padding-left: 24px;
+  padding: 0 24px;
   margin-bottom: 16px;
+}
+.sidebar__title--with-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 .sidebar__footer {
   padding: 16px 24px;
