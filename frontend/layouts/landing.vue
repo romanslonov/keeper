@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  middleware: 'auth',
+  middleware: ['notAuthenticated'],
   name: 'LandingLayout'
 }
 </script>
