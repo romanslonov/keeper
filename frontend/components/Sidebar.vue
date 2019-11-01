@@ -185,7 +185,7 @@ export default {
       }
     },
     isCurrentUserOwner (board) {
-      return board.ownerId === this.$store.getters.user.id
+      return board.ownerId === this.$store.state.auth.user.id
     },
     isBoardActive (board) {
       return board.id === Number(this.$route.params.id)

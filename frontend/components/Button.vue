@@ -104,8 +104,8 @@ export default {
 
   .button--disabled {
     cursor: not-allowed;
-    color: #445c7f;
-    background-color: #e8ebf3;
+    color: var(--text-secondary);
+    background-color: var(--gray-200);
   }
 
   .button--fullwidth {

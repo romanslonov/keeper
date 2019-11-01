@@ -55,9 +55,12 @@ export default {
   },
   methods: {
     login () {
-      return this.$store.dispatch('login', this.form)
-        .then(() => this.$router.push('/h'))
-        .catch(err => window.console.log(err))
+      return this.$auth.loginWith('local', {
+        data: this.form
+      })
+      // return this.$store.dispatch('login', this.form)
+      //   .then(() => this.$router.push('/h'))
+      //   .catch(err => window.console.log(err))
     }
   }
 }

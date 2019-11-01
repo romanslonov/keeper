@@ -1,6 +1,6 @@
 <template>
   <div class="profile-view">
-    <button class="profile-view__button">
+    <button class="profile-view__button" @click="modals.user = true">
       <font-awesome-icon class="profile-view__avatar" :icon="['fas', 'user-astronaut']" />
       <div class="profile-view__content">
         <div class="profile-view__name">
@@ -11,15 +11,37 @@
         </div>
       </div>
     </button>
+
+    <modal :open="modals.user" title="" @close="modals.user = false">
+      <h1>{{ user.name }}</h1>
+      <button @click="logout">
+        Logout
+      </button>
+    </modal>
   </div>
 </template>
 
 <script>
+import Modal from '~/components/Modal'
 export default {
   name: 'ProfileView',
+  components: { Modal },
+  data () {
+    return {
+      modals: {
+        user: false
+      }
+    }
+  },
   computed: {
     user () {
-      return this.$store.state.user
+      return this.$store.state.auth.user
+    }
+  },
+  methods: {
+    async logout () {
+      await this.$auth.logout()
+      this.modals.user = false
     }
   }
 }

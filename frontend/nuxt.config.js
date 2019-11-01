@@ -27,12 +27,6 @@ export default {
     '~/assets/main.css'
   ],
   /*
-  ** Plugins to load before mounting the App
-  */
-  plugins: [
-    '~/plugins/axios'
-  ],
-  /*
   ** Nuxt.js dev-modules
   */
   buildModules: [
@@ -45,6 +39,7 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
+    '@nuxtjs/auth',
     '@nuxtjs/pwa',
     'nuxt-fontawesome'
   ],
@@ -63,6 +58,30 @@ export default {
   axios: {
     baseURL: API_ROOT,
     progress: false
+  },
+  auth: {
+    strategies: {
+      local: {
+        endpoints: {
+          login: { url: 'login', method: 'post', propertyName: 'token' },
+          user: { url: 'profile', method: 'get', propertyName: 'user' },
+          logout: false
+        },
+        tokenRequired: true,
+        tokenType: 'Bearer'
+      }
+    },
+    cookie: {
+      options: {
+        expires: 7
+      }
+    },
+    redirect: {
+      login: '/auth/login',
+      logout: '/',
+      callback: 'login',
+      home: '/h'
+    }
   },
   /*
   ** Build configuration

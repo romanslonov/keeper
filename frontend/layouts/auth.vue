@@ -7,7 +7,9 @@
 </template>
 
 <script>
-export default {}
+export default {
+  middleware: ['notAuthenticated']
+}
 </script>
 
 <style scoped>

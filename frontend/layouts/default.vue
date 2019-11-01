@@ -19,7 +19,7 @@ import Sidebar from '~/components/Sidebar'
 import UploadWidget from '~/components/UploadWidget'
 export default {
   name: 'MainLayout',
-  middleware: ['authenticated'],
+  middleware: 'auth',
   components: { Sidebar, UploadWidget }
 }
 </script>
