@@ -1,5 +1,8 @@
 <template>
   <div class="auth-layout">
+    <nuxt-link to="/">
+      <font-awesome-icon class="auth-layout__logo" :icon="['fas', 'fill']" />
+    </nuxt-link>
     <div class="auth-layout__wrapper">
       <nuxt />
     </div>
@@ -16,12 +19,16 @@ export default {
   .auth-layout {
     min-height: 100vh;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     background-color: var(--gray-200);
     padding: 16px;
   }
-
+  .auth-layout__logo {
+    font-size: 30px;
+    margin-bottom: 32px;
+  }
   .auth-layout__wrapper {
     width: 100%;
     max-width: 480px;

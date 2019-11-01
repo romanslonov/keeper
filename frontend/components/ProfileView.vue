@@ -12,20 +12,25 @@
       </div>
     </button>
 
-    <modal :open="modals.user" title="" @close="modals.user = false">
-      <h1>{{ user.name }}</h1>
-      <button @click="logout">
-        Logout
-      </button>
+    <modal :open="modals.user" title="Profile" @close="modals.user = false">
+      <div class="profile-view__modal">
+        <font-awesome-icon class="profile-view__modal-avatar" :icon="['fas', 'user-astronaut']" />
+        <h2>{{ user.name }}</h2>
+        <p class="profile-view__modal-email">{{ user.email }}</p>
+        <v-button appearance="subtle" @click="logout">
+          Logout
+        </v-button>
+      </div>
     </modal>
   </div>
 </template>
 
 <script>
 import Modal from '~/components/Modal'
+import VButton from '~/components/Button'
 export default {
   name: 'ProfileView',
-  components: { Modal },
+  components: { Modal, VButton },
   data () {
     return {
       modals: {
@@ -81,5 +86,18 @@ export default {
 
 .profile-view__description {
     color: var(--text-secondary);
+}
+
+.profile-view__modal {
+  text-align: center;
+}
+.profile-view__modal-email {
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+.profile-view__modal-avatar {
+  font-size: 48px;
+  margin-bottom: 16px;
+  color: var(--text-secondary);
 }
 </style>

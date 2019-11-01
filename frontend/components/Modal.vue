@@ -5,18 +5,22 @@
         <h3 class="modal__title">
           {{ title }}
         </h3>
-        <button @click="close">
-          close
-        </button>
+        <v-button appearance="icon" size="1" @click="close">
+          <font-awesome-icon :icon="['fas', 'times']" />
+        </v-button>
       </header>
-      <slot />
+      <div class="modal__content">
+        <slot />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import VButton from '~/components/Button'
 export default {
   name: 'Modal',
+  components: { VButton },
   props: {
     title: {
       type: String,
@@ -71,8 +75,12 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 16px;
 }
 .modal__title {
     margin: 0;
+}
+.modal__content {
+  padding: 16px;
 }
 </style>
