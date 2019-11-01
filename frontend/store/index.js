@@ -49,7 +49,7 @@ export default {
       return this.$axios.$post('/login', payload)
         .then(({ user, token }) => {
           commit('authenticate', { authenticated: true, user, token })
-          Cookies.set('token', token)
+          Cookies.set('token', token, { expires: 7 })
           return { user, token }
         })
         .catch((err) => {
